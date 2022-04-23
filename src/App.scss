@@ -1,0 +1,20 @@
+$font-stack: "Raleway", sans-serif;
+$font-color: rgba(29, 31, 34, 1);
+
+
+#root{
+    background: #fff;
+    // background: aquamarine;
+    height: 100%;
+
+    .App{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+        max-width: 1440px;
+        background: #fff;
+        color: $font-color;
+        font-family: $font-stack;
+    }
+}
