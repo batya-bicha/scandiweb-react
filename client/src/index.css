@@ -4,6 +4,7 @@
     padding: 0;
     margin: 0;
     border: 0;
+    -ms-overflow-style: none;
 }
 
 *::-webkit-scrollbar {
@@ -49,7 +50,7 @@ body {
     width: 100%;
     font-size: 100%;
     line-height: 1;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 input,
@@ -107,8 +108,4 @@ input:focus:-ms-input-placeholder {
 
 i {
     font-style: normal;
-}
-
-input::-webkit-search-cancel-button {
-    display: none;
 }
