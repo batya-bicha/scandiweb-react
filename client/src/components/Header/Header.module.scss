@@ -9,59 +9,72 @@
     margin-bottom: 80px;
     max-width: 1280px;
 
+    .active{
+        color: rgba(94, 206, 123, 1) !important;
+
+        &::after{
+            content: '';
+            display: block;
+            position: absolute;
+            width: 150%;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 2px;
+            background: rgba(94, 206, 123, 1);
+            cursor: auto;
+        }
+    }
+
     .navigation{
         display: flex;
         justify-content: space-around;
         width: 20%;
 
         ul{
+            height: 80px;
             display: flex; 
+            align-items: center;
 
             .navItem{
+                display: flex;
+                align-items: center;
                 position: relative;
+                height: 100%;
                 margin: 0 20px;
                 cursor: pointer;
+                font-weight: 500;
+            }   
 
-                &:nth-child(1){
-                    color: rgba(94, 206, 123, 1);
+            a{
+                display: flex;
+                align-items: center;
+                height: 100%;
 
-                    &::after{
-                        content: '';
-                        display: block;
-                        position: absolute;
-                        width: 150%;
-                        top: 49px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        height: 2px;
-                        background: rgba(94, 206, 123, 1);
-                        cursor: auto;
-                    }
-                }
-
-                &:hover{
-                    color: rgba(94, 206, 123, 1);
-                    
-                }
-            }
+                &:hover {
+                    color: rgba(94, 206, 123, 1) !important;
+                }          
+             }
         }
+    }
         
-    }
-    .logo{
-        img{
-            width: 50px;
-            height: 50px;
-        }
-    }
-    .actions{
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        width: 20%;
-
-        div{
-            margin: 0 10px;
-            cursor: pointer;
-        }
+}
+.logo{
+    img{
+        width: 50px;
+        height: 50px;
     }
 }
+
+.actions{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 20%;
+
+    div{
+        margin: 0 10px;
+        cursor: pointer;
+    }
+}
+

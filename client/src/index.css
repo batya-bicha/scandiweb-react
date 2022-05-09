@@ -77,6 +77,9 @@ ul li {
 }
 
 img {
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    -ms-interpolation-mode: nearest-neighbor;  /* IE */
+    image-rendering: crisp-edges; /* Стандартное свойство */
     vertical-align: top;
 }
 

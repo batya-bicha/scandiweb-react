@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styles from './Cart.module.scss';
 
-const Cart = () => {
-    return (
-        <div className={styles.cart}>
-            <img className={styles.cartImg} src='./img/cart.svg' alt='cart' />
-        </div>
-    );
-};
+class Cart extends Component {
+    render = () => {
+        return (
+            <div className={styles.cart}>
+                <img className={styles.cartImg} src='/img/cart.svg' alt='cart' />
+            </div>
+        );
+    }
+}
 
 export default Cart;

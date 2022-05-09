@@ -4,7 +4,6 @@ $font-color: rgba(29, 31, 34, 1);
 
 #root{
     background: #fff;
-    // background: aquamarine;
     height: 100%;
 
     .App{
@@ -13,8 +12,13 @@ $font-color: rgba(29, 31, 34, 1);
         align-items: center;
         margin: 0 auto;
         max-width: 1440px;
+        height: 100%;
         background: #fff;
         color: $font-color;
         font-family: $font-stack;
+
+        :visited{
+            color: inherit;
+        }
     }
 }
