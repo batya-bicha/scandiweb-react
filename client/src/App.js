@@ -23,13 +23,6 @@ class App extends Component {
     }
   }
 
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   if (this.state.name !== prevState.name && this.state.name !== prevState.description) {
-
-  //   }
-  // }
-
-
   openPDP = (id, gallery, brand, name, attributes, prices, description) => {
     this.setState(
       {
@@ -44,6 +37,7 @@ class App extends Component {
     )
   }
 
+
   render = () => {
     return (
       <div className="App">
@@ -52,19 +46,7 @@ class App extends Component {
         />
         <Switch>
           <Redirect from='/' to='/all' exact />
-          <Route path='/all' exact>
-            <Main
-              client={this.state.client}
-              openPDP={this.openPDP}
-            />
-          </Route>
-          <Route path='/clothes' exact>
-            <Main
-              client={this.state.client}
-              openPDP={this.openPDP}
-            />
-          </Route>
-          <Route path='/tech' exact>
+          <Route path='/:id' exact>
             <Main
               client={this.state.client}
               openPDP={this.openPDP}
@@ -73,7 +55,7 @@ class App extends Component {
           <Route path='/cart' exact>
             <Cart />
           </Route>
-          <Route path='/product/:id' exact>
+          <Route path='/:id/product/:id' exact>
             <Product
               client={this.state.client}
               id={this.state.id}

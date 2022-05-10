@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { gql } from "@apollo/client";
+import { withRouter } from "react-router";
 import { NavLink } from 'react-router-dom';
 import Card from '../Card';
 import styles from './Main.module.scss';
@@ -17,7 +18,9 @@ class Main extends Component {
         products = await this.props.client.query({
             query: gql`
                 query {
-                    category{
+                    category(input: {
+                        title: "${this.props.match.params.id}"
+                      }){
                         products{
                             id
                             name
@@ -48,23 +51,36 @@ class Main extends Component {
 
         this.setState(
             {
-                products: products.data
+                products: products.data,
+                url: this.props.match.params.id
             }
         );
     }
 
     componentDidMount = () => {
-        console.log(this.props)
         this.getProducts();
+    }
+
+    componentDidUpdate = (prevProps) => {
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.getProducts();
+        }
+
+    }
+
+    getUrl = () => {
+        return (
+            this.props.match.params.id[0].toUpperCase() + this.props.match.params.id.slice(1)
+        )
     }
 
     render = () => {
         return (
             <main className={styles.main}>
-                <h2 className={styles.category}>{'{Category name}'}</h2>
+                <h2 className={styles.category}>{this.getUrl()}</h2>
                 <section className={styles.container}>
                     {this.state.products?.category.products.map(i =>
-                        <NavLink key={i.id} exact to={`/product/${i.id}`} >
+                        <NavLink key={i.id} exact to={`${this.state.url}/product/${i.id}`}>
                             <Card
                                 id={i.id}
                                 name={i.name}
@@ -78,10 +94,19 @@ class Main extends Component {
                             />
                         </NavLink>
                     )}
+                    {this.state.products?.category.products.length <= 2
+                        ?
+                        <Card
+                            fakeCard={'fakeCard'}
+                            number={3 - this.state.products?.category.products.length}
+                        />
+                        :
+                        null
+                    }
                 </section>
             </main>
         );
     }
 }
 
-export default Main;
+export default withRouter(Main);

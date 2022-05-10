@@ -17,6 +17,15 @@ $font-color: rgba(29, 31, 34, 1);
         color: $font-color;
         font-family: $font-stack;
 
+
+        :link{
+            color: inherit;
+        }
+
+        :active{
+            color: inherit;
+        }
+
         :visited{
             color: inherit;
         }

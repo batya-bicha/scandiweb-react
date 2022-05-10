@@ -55,8 +55,13 @@ class Product extends Component {
         this.getProductById()
     }
 
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.state.product?.gallery[0] !== prevState.product?.gallery[0]) {
+            this.showBigImg(this.state.product?.gallery[0])
+        }
+    }
 
-    //? НАПИСАТЬ МЕТОДЫ ДЛЯ ДИНАМИЧЕСКОЙ "ВЕРСТКИ" НЕ В RENDER()!!! 
+    //? renderProductCurrency!!!
 
     renderProductGallery = () => {
         return (
@@ -64,9 +69,13 @@ class Product extends Component {
                 {this.state.product?.gallery.length > 1
                     ?
                     <div className={styles.leftSlider}>
-                        {this.state.product?.gallery.map(i =>
-                            <div key={i} className={styles.sliderImg}>
-                                <img src={i} alt={i} />
+                        {this.state.product?.gallery.map((i, index) =>
+                            <div onClick={() => this.showBigImg(i)} key={i} className={styles.sliderImg}>
+                                <img
+                                    className={this.state.src === i ? styles.active : ''}
+                                    src={i}
+                                    alt={i}
+                                />
                             </div>
                         )}
                     </div>
@@ -74,7 +83,10 @@ class Product extends Component {
                     null
                 }
                 <div className={styles.productImg}>
-                    <img src={this.state.product?.gallery[0]} alt={this.state.product?.name} />
+                    <img
+                        src={this.state.src === undefined ? this.state.product?.gallery[0] : this.state.src}
+                        alt={this.state.product?.name}
+                    />
                 </div>
             </section>
         )
@@ -133,6 +145,29 @@ class Product extends Component {
         )
     }
 
+    renderProductCurrency = () => {
+        return (
+            <div className={styles.productPrice}>
+                <span className={styles.priceName}>PRICE:</span>
+                <span className={styles.productAmount}>{this.state.product?.prices[0].currency.symbol + '' + this.state.product?.prices[0].amount}</span>
+            </div>
+        )
+    }
+
+    renderSomeDescription = () => {
+        return (
+            this.state.product?.description ? parse(this.state.product?.description) : ''
+
+        )
+    }
+
+    showBigImg = (src) => {
+        this.setState(
+            {
+                src: src,
+            }
+        )
+    }
 
 
     render = () => {
@@ -142,13 +177,10 @@ class Product extends Component {
                 <section className={styles.productInfoBlock}>
                     {this.renderProductTitle()}
                     {this.renderProductAttributes()}
-                    <div className={styles.productPrice}>
-                        <span className={styles.priceName}>PRICE:</span>
-                        <span className={styles.productAmount}>{this.state.product?.prices[0].currency.symbol + '' + this.state.product?.prices[0].amount}</span>
-                    </div>
+                    {this.renderProductCurrency()}
                     <button className={styles.productBtn}>ADD TO CART</button>
                     <div className={styles.productDesc}>
-                        {this.state.product?.description ? parse(this.state.product?.description) : ''}
+                        {this.renderSomeDescription()}
                     </div>
                 </section>
             </div>

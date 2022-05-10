@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { withRouter } from "react-router";
 import Cart from '../Cart';
 import CurrencySwitcher from '../CurrencySwitcher';
 import styles from './Header.module.scss';
@@ -34,12 +35,16 @@ class Header extends Component {
         this.getCategories();
     }
 
+
     renderCategoriesLinks = () => {
         return (
             <ul>
                 {this.state.categories?.categories.map(i =>
                     <li key={i.name} className={styles.navItem}>
-                        <NavLink activeClassName={styles.active} to={`/${i.name}`}>
+                        <NavLink
+                            activeClassName={styles.active}
+                            to={`/${i.name}`}
+                        >
                             {i.name.toUpperCase()}
                         </NavLink>
                     </li>
@@ -66,4 +71,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);
