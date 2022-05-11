@@ -90,7 +90,7 @@ class Main extends Component {
                                 attributes={i.attributes}
                                 prices={i.prices}
                                 brand={i.brand}
-                                onCard={this.props.openPDP}
+                                addToCart={this.props.addToCart}
                             />
                         </NavLink>
                     )}

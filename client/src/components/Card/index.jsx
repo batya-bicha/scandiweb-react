@@ -5,37 +5,49 @@ class Card extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {}
+        this.state = {
+            handler: false,
+            quantity: 1
+        }
     }
 
     checkInStock = () => {
         return (
             this.props.inStock
                 ?
+                this.renderCartBtn()
+                :
                 <div className={styles.inStockText}>
                     OUT OF STOCK
                 </div>
-                :
-                null
         )
     }
 
-    //? ПРИ НАВЕДЕНИИ МБ ЧЕРЕЗ STATE.BOOL
-    addToCart = () => {
+
+    //? ПОРАБОТАТЬ С СЫЛКАМИ И ПЕРЕДАВАТЬ В МЕТОД ДАННЫЕ ПРОДУКТА
+    addToCart = (e) => {
+        e.preventDefault();
+        this.props.addToCart(
+            this.props.id,
+            this.props.brand,
+            this.props.name,
+            this.props.prices,
+            this.props.attributes,
+            this.props.gallery,
+            this.state.quantity,
+        )
+    }
+
+    renderCartBtn = () => {
         return (
-            <div className={styles.toCart}>
+            <div onClick={(e) => this.addToCart(e)} className={styles.toCart}>
                 <img src='/img/whiteCart.svg' alt='whiteCart' />
-            </div>
-        )
-    }
-
-    addCard = () => {
-        this.props.onCard(this.props.id, this.props.gallery, this.props.brand, this.props.name, this.props.attributes, this.props.prices, this.props.description);
+            </div>)
     }
 
     renderCards = () => {
         return (
-            <div onMouseOver={() => this.addToCart()} onClick={() => this.addCard()} className={styles.card + ' ' + (this.props.inStock ? styles.inStock : '')}>
+            <div className={styles.card + ' ' + (this.props.inStock ? '' : styles.inStock)}>
                 <div className={styles.cardImgContainer}>
                     <img className={styles.cardImage} src={this.props.gallery[0]} alt={this.props.name} />
                 </div>

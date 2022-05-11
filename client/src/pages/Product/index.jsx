@@ -27,14 +27,14 @@ class Product extends Component {
                     attributes {
                         name
                         items {
-                        displayValue
-                        value
+                            displayValue
+                            value
                         }
                     }
                     prices {
                         currency {
-                        label
-                        symbol
+                            label
+                            symbol
                         }
                         amount
                     }
@@ -136,8 +136,8 @@ class Product extends Component {
                     <li
                         key={i.value}
                         style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}>
-
+                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}
+                    >
                         {i.value.includes('#') ? null : i.value}
                     </li>
                 )}
@@ -145,6 +145,8 @@ class Product extends Component {
         )
     }
 
+
+    //? ВАЛЮТА
     renderProductCurrency = () => {
         return (
             <div className={styles.productPrice}>

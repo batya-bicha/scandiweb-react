@@ -114,10 +114,12 @@
                     .attributeItem{
                         position: relative;
                         width: 32px;
+                        font-family: 'Source Sans Pro',sans-serif;
+                        font-size: 16px;
                         height: 32px;
                         background: #000;
                         margin-right: 8px;
-                        border: 1px solid #00000027;
+                        border: 1px solid rgba(0, 0, 0, 0.153);
                         cursor: pointer;
                         
                         &:hover{

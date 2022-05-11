@@ -64,7 +64,9 @@ class Header extends Component {
                 </div>
                 <section className={styles.actions}>
                     <CurrencySwitcher />
-                    <Cart />
+                    <NavLink to='/all/cart'>
+                        <Cart />
+                    </NavLink>
                 </section>
             </header>
         );
