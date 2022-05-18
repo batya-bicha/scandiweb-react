@@ -1,0 +1,287 @@
+.cartContainer {
+    display: flex;
+    flex-direction: column;
+
+    .cartItem {
+        min-height: 250px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 25px 0;
+        border-bottom: 1px solid #e5e5e5;
+
+        .productInfoBlock {
+            display: flex;
+            justify-content: stretch;
+            flex-direction: column;
+            // height: 100%;
+
+            .productTitle {
+                margin-bottom: 20px;
+
+                .productBrand {
+                    font-weight: 600;
+                    font-size: 30px;
+                    margin-bottom: 16px;
+                }
+
+                .productName {
+                    font-weight: 400;
+                    font-size: 30px;
+                }
+            }
+
+            .productPrice {
+                display: flex;
+                align-items: end;
+                margin-bottom: 20px;
+
+                .productAmount {
+                    font-weight: 700;
+                    font-size: 24px;
+                }
+            }
+
+            .productAttributes {
+                display: flex;
+                flex-direction: column;
+
+                .attributeSize {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 16px;
+
+                    .attributeName {
+                        display: flex;
+                        font-family: "Roboto Condensed", sans-serif;
+                        font-weight: 700;
+                        font-size: 18px;
+                        margin-bottom: 8px;
+                    }
+
+                    .attributeList {
+                        display: flex;
+
+                        .attributeItem {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 16px;
+                            width: 63px;
+                            height: 45px;
+                            border: 1px solid #1d1f22;
+                            color: inherit;
+                            margin-right: 8px;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #fff;
+                                background: #1d1f22;
+                            }
+                        }
+
+                        .active {
+                            color: #fff;
+                            background: #1d1f22;
+                        }
+                    }
+                }
+
+                .attributeColor {
+                    display: flex;
+                    flex-direction: column;
+
+                    .attributeName {
+                        display: flex;
+                        font-family: "Roboto Condensed", sans-serif;
+                        font-weight: 700;
+                        font-size: 18px;
+                        margin-bottom: 8px;
+                    }
+
+                    .attributeList {
+                        display: flex;
+
+                        .attributeItem {
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 16px;
+                            width: 32px;
+                            height: 32px;
+                            background: #000;
+                            margin-right: 8px;
+                            border: 1px solid rgba(0, 0, 0, 0.153);
+                            cursor: pointer;
+
+                            &:hover {
+                                border: 1px solid #fff;
+                                outline: 2px solid #5ece7b;
+                            }
+
+                            .active {
+                                border: 1px solid #fff;
+                                outline: 2px solid #5ece7b;
+                            }
+                        }
+
+                        .active {
+                            border: 1px solid #fff;
+                            outline: 2px solid #5ece7b;
+                        }
+                    }
+                }
+            }
+        }
+
+        .productView {
+            display: flex;
+
+            .productQuantity {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-right: 25px;
+
+                .quantityPlus {
+                    position: relative;
+                    width: 45px;
+                    height: 45px;
+                    border: 1px solid #1d1f22;
+                    transition: background-color 250ms ease-in-out;
+                    cursor: pointer;
+
+                    &:before,
+                    &:after {
+                        position: absolute;
+                        content: "";
+                        top: 14px;
+                        left: 21px;
+                        height: 15px;
+                        width: 1px;
+                        background-color: #333;
+                    }
+
+                    &::before {
+                        transform: rotate(90deg);
+                    }
+
+                    &::after {
+                        transform: rotate(-180deg);
+                    }
+
+                    &:hover {
+                        background: #1d1f22;
+
+                        &:before,
+                        &:after {
+                            background-color: #fff;
+                        }
+                    }
+                }
+
+                .quantity {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 45px;
+                    height: 45px;
+                    font-weight: 500;
+                    font-size: 24px;
+                }
+
+                .quantityMinus {
+                    position: relative;
+                    width: 45px;
+                    height: 45px;
+                    border: 1px solid #1d1f22;
+                    cursor: pointer;
+                    transition: background-color 250ms ease;
+
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        top: 14px;
+                        left: 21px;
+                        height: 15px;
+                        width: 1px;
+                        background-color: #333;
+                    }
+
+                    &::before {
+                        transform: rotate(90deg);
+                    }
+
+                    &:hover {
+                        background: #1d1f22;
+
+                        &:before {
+                            background-color: #fff;
+                        }
+                    }
+                }
+            }
+
+            .productSlider {
+                height: 290px;
+                width: 200px;
+
+                .sliderContainer {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    border: 3px solid red;
+
+                    .sliderLine {
+                        position: relative;
+                        left: 0;
+                        transition: all ease 1s;
+                        display: flex;
+                        height: 100%;
+                        width: 100%;
+                    }
+
+                    .sliderBtns {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 56px;
+                        position: absolute;
+                        top: 85%;
+                        left: 60%;
+                        z-index: 9999;
+
+                        .sliderPrev {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 24px;
+                            height: 24px;
+                            background: rgba(0, 0, 0, 0.73);
+
+                            img {
+                                margin-right: 2px;
+                            }
+                        }
+
+                        .sliderNext {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 24px;
+                            height: 24px;
+                            background: rgba(0, 0, 0, 0.73);
+
+                            img {
+                                transform: rotate(180deg);
+                                margin-left: 2px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &:nth-child(1) {
+            border-top: 1px solid #e5e5e5;
+        }
+    }
+}

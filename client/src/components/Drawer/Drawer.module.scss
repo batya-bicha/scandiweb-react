@@ -1,0 +1,107 @@
+.overlay {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    width: 100%;
+    height: 100%;
+    background: rgba(57, 55, 72, 0.22);
+    z-index: 1001;
+
+    .drawer {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        width: 325px;
+        max-height: 680px;
+        top: 0;
+        right: 120px;
+        padding: 32px 16px;
+        background: #fff;
+        z-index: 9999;
+
+        .drawerTitle {
+            font-size: 16px;
+            padding-bottom: 32px;
+
+            .boldTitle {
+                font-weight: 700;
+            }
+        }
+
+        .drawerItems {
+            overflow-y: scroll;
+            margin-bottom: 32px;
+
+            :last-child {
+                // background: #000;
+                margin-bottom: 0;
+            }
+        }
+
+        .drawerTotal {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 32px;
+
+            .total {
+                font-family: "Roboto", sans-serif;
+            }
+        }
+
+        .drawerBtns {
+            display: flex;
+            justify-content: space-between;
+
+            .btnViewBag {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid #1d1f22;
+                background: #fff;
+                width: 140px;
+                height: 45px;
+
+                &:hover {
+                    background: #1d1f22;
+                    color: #fff;
+                }
+            }
+
+            .btnCheckOut {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #5ece7b;
+                color: #fff;
+                width: 140px;
+                height: 45px;
+
+                &:hover {
+                    background: #68de87;
+                }
+            }
+        }
+
+        .emptyCart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            .emptyImg {
+                width: 160px;
+                height: 160px;
+                margin-bottom: 10px;
+            }
+
+            .emptyText {
+                text-align: center;
+                line-height: 20px;
+                text-transform: uppercase;
+                font-size: 15px;
+            }
+        }
+    }
+}

@@ -1,0 +1,275 @@
+.drawerContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    margin-bottom: 40px;
+
+    .drawerItem {
+        // height: 190px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .productInfoBlock {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            .productTitle {
+                margin-bottom: 4px;
+                font-weight: 300;
+                font-size: 16px;
+                line-height: 160%;
+            }
+
+            .productPrice {
+                margin-bottom: 8px;
+
+                .productAmount {
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 160%;
+                }
+            }
+
+            .productAttributes {
+                display: flex;
+                flex-direction: column;
+
+                .attributeSize {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 8px;
+
+                    .attributeName {
+                        display: flex;
+                        font-weight: 400;
+                        font-size: 14px;
+                        margin-bottom: 8px;
+                    }
+
+                    .attributeList {
+                        display: flex;
+                        flex-wrap: wrap;
+
+                        .attributeItem {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 14px;
+                            width: 24px;
+                            height: 24px;
+                            color: rgb(163, 163, 163);
+                            border: 1px solid #1d1f22;
+                            color: inherit;
+                            margin-right: 8px;
+                            overflow: hidden;
+                            cursor: not-allowed;
+                        }
+
+                        .active {
+                            color: rgb(163, 163, 163);
+                            background: #3c3d3f;
+                        }
+
+                        :last-child {
+                            margin-right: 0;
+                        }
+                    }
+
+                    :last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .attributeCapacity {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 8px;
+
+                    .attributeName {
+                        display: flex;
+                        font-weight: 400;
+                        font-size: 14px;
+                        margin-bottom: 8px;
+                    }
+
+                    .attributeList {
+                        display: flex;
+                        flex-wrap: wrap;
+
+                        .attributeItem {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 9.5px;
+                            width: 26px;
+                            height: 26px;
+                            outline: 1px solid #1d1f22;
+                            color: inherit;
+                            margin-right: 8px;
+                            overflow: hidden;
+                            cursor: not-allowed;
+                        }
+
+                        .active {
+                            color: #fff;
+                            background: #1d1f22;
+                        }
+
+                        :last-child {
+                            margin-right: 0;
+                        }
+                    }
+
+                    :last-child {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .attributeColor {
+                    display: flex;
+                    flex-direction: column;
+
+                    .attributeName {
+                        display: flex;
+                        font-weight: 400;
+                        font-size: 14px;
+                        margin-bottom: 8px;
+                    }
+
+                    .attributeList {
+                        display: flex;
+                        flex-wrap: wrap;
+
+                        .attributeItem {
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 14px;
+                            width: 24px;
+                            height: 24px;
+                            margin-right: 8px;
+                            border: 1px solid rgba(0, 0, 0, 0.153);
+                            margin-bottom: 8px;
+                            cursor: not-allowed;
+                        }
+
+                        .active {
+                            border: 1px solid #fff;
+                            outline: 2px solid #5ece7b;
+                        }
+
+                        :last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
+
+                :last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .productView {
+            display: flex;
+
+            .productQuantity {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                margin-right: 8px;
+
+                .quantityPlus {
+                    position: relative;
+                    width: 24px;
+                    height: 24px;
+                    border: 1px solid #1d1f22;
+                    transition: background-color 250ms ease-in-out;
+                    cursor: pointer;
+
+                    &:before,
+                    &:after {
+                        position: absolute;
+                        content: "";
+                        top: 6px;
+                        left: 11px;
+                        height: 10px;
+                        width: 1px;
+                        background-color: #333;
+                    }
+
+                    &::before {
+                        transform: rotate(90deg);
+                    }
+
+                    &::after {
+                        transform: rotate(-180deg);
+                    }
+
+                    &:hover {
+                        background: #1d1f22;
+
+                        &:before,
+                        &:after {
+                            background-color: #fff;
+                        }
+                    }
+                }
+
+                .quantity {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 24px;
+                    height: 24px;
+                    font-weight: 500;
+                    font-size: 16px;
+                }
+
+                .quantityMinus {
+                    position: relative;
+                    width: 24px;
+                    height: 24px;
+                    border: 1px solid #1d1f22;
+                    cursor: pointer;
+                    transition: background-color 250ms ease;
+
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        top: 6px;
+                        left: 11px;
+                        height: 10px;
+                        width: 1px;
+                        background-color: #333;
+                    }
+
+                    &::before {
+                        transform: rotate(90deg);
+                    }
+
+                    &:hover {
+                        background: #1d1f22;
+
+                        &:before {
+                            background-color: #fff;
+                        }
+                    }
+                }
+            }
+
+            .productImg {
+                width: 120px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+    }
+}

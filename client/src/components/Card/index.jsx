@@ -7,7 +7,8 @@ class Card extends Component {
 
         this.state = {
             handler: false,
-            quantity: 1
+            quantity: 1,
+            __typename: 'Product'
         }
     }
 
@@ -23,18 +24,20 @@ class Card extends Component {
         )
     }
 
-
-    //? ПОРАБОТАТЬ С СЫЛКАМИ И ПЕРЕДАВАТЬ В МЕТОД ДАННЫЕ ПРОДУКТА
     addToCart = (e) => {
         e.preventDefault();
         this.props.addToCart(
+            this.state.__typename,
             this.props.id,
-            this.props.brand,
             this.props.name,
-            this.props.prices,
-            this.props.attributes,
+            this.props.inStock,
             this.props.gallery,
-            this.state.quantity,
+            this.props.description,
+            this.props.category,
+            this.props.attributes,
+            this.props.prices,
+            this.props.brand,
+            // this.state.quantity,
         )
     }
 
@@ -42,7 +45,8 @@ class Card extends Component {
         return (
             <div onClick={(e) => this.addToCart(e)} className={styles.toCart}>
                 <img src='/img/whiteCart.svg' alt='whiteCart' />
-            </div>)
+            </div>
+        )
     }
 
     renderCards = () => {
@@ -53,8 +57,11 @@ class Card extends Component {
                 </div>
                 {this.checkInStock()}
                 <div className={styles.cardDesc}>
-                    <span className={styles.cardName}>{this.props.name}</span>
-                    <span className={styles.cardCost}>{this.props.prices[0].currency.symbol + this.props.prices[0]?.amount}</span>
+                    <span className={styles.cardName}>{this.props.name + ' ' + this.props.brand}</span>
+                    <span className={styles.cardCost}>
+                        {this.state.currency}
+                        {/* {this.props.prices[0].currency.symbol + this.props.prices[0]?.amount} */}
+                    </span>
                 </div>
             </div>
         )
@@ -76,6 +83,26 @@ class Card extends Component {
                     this.renderCards()
         )
     }
+
+    componentDidMount = () => {
+        this.setState(
+            {
+                currency: localStorage.getItem('currency')
+            }
+        )
+    }
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.state.currency !== prevState.currency) {
+            this.setState(
+                {
+                    currency: localStorage.getItem('currency')
+                }
+            )
+        }
+        // console.log(this.state.currency, prevState.currency)
+    }
+
 
     render = () => {
         return (

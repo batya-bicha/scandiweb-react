@@ -7,14 +7,13 @@ class Carousel extends Component {
 
         this.state = {
             offset: 0,
-            pages: [],
         };
     }
 
-    usege = () => {
+    gettingChildren = () => {
         this.setState(
             {
-                pages: Children.map(this.props.children, (child) => {
+                pages: Children?.map(this.props?.children, (child) => {
                     return cloneElement(child, {
                         style: {
                             height: '100%',
@@ -30,7 +29,7 @@ class Carousel extends Component {
     prevSlide = () => {
         this.setState(
             {
-                offset: (this.state.offset + 200) === 200 ? -200 * 3 : (this.state.offset + 200),
+                offset: (this.state.offset + 200) === 200 ? (-200 * (this.props.children.length - 1)) : (this.state.offset + 200),
             }
         )
     }
@@ -38,14 +37,20 @@ class Carousel extends Component {
     nextSlide = () => {
         this.setState(
             {
-                offset: (this.state.offset - 200) === -200 * 4 ? 0 : (this.state.offset - 200),
+                offset: (this.state.offset - 200) === (-200 * this.props.children.length) ? 0 : (this.state.offset - 200),
             }
         )
     }
 
     componentDidMount = () => {
-        this.usege();
+        this.gettingChildren();
     };
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.children.length !== prevProps.children?.length || this.props.children.key !== prevProps.children.key) {
+            this.gettingChildren();
+        }
+    }
 
     render() {
         return (
@@ -56,18 +61,24 @@ class Carousel extends Component {
                             className={styles.slideContainer}
                             style={{ transform: `translateX(${this.state.offset}px)` }}
                         >
-                            {this.state.pages}
+                            {this.state?.pages}
                         </div>
                     </div>
                 </div>
-                <div className={styles.sliderBtns}>
-                    <button onClick={() => this.prevSlide()} className={styles.prev}>
-                        <img src='/img/whiteArrow.svg' alt='arrow'></img>
-                    </button>
-                    <button onClick={() => this.nextSlide()} className={styles.next}>
-                        <img src='/img/whiteArrow.svg' alt='arrow'></img>
-                    </button>
-                </div>
+                {
+                    this.props.children.length === undefined
+                        ?
+                        null
+                        :
+                        <div className={styles.sliderBtns}>
+                            <button onClick={() => this.prevSlide()} className={styles.prev}>
+                                <img src='/img/whiteArrow.svg' alt='arrow'></img>
+                            </button>
+                            <button onClick={() => this.nextSlide()} className={styles.next}>
+                                <img src='/img/whiteArrow.svg' alt='arrow'></img>
+                            </button>
+                        </div>
+                }
             </div>
         )
     }

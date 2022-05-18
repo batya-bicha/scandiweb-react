@@ -2,8 +2,6 @@ import { gql } from '@apollo/client';
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router";
-import Cart from '../Cart';
-import CurrencySwitcher from '../CurrencySwitcher';
 import styles from './Header.module.scss';
 
 
@@ -11,7 +9,9 @@ class Header extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            currency: 'USD'
+        };
     }
 
     getCategories = async () => {
@@ -24,6 +24,7 @@ class Header extends Component {
             }
             `
         })
+
         this.setState(
             {
                 categories: categories.data,
@@ -31,8 +32,28 @@ class Header extends Component {
         )
     }
 
+    getCurrencies = async () => {
+        const currencies = await this.props.client.query({
+            query: gql`
+               query {
+                currencies {
+                    symbol
+                    label
+                  }
+                }
+            `
+        });
+
+        this.setState(
+            {
+                currencies: currencies.data.currencies
+            }
+        );
+    }
+
     componentDidMount = () => {
         this.getCategories();
+        this.getCurrencies();
     }
 
 
@@ -53,6 +74,26 @@ class Header extends Component {
         );
     }
 
+    onClickSwitcher = (bool) => {
+        this.props.onClickSwitcher(!bool)
+    }
+
+    onClickCart = (bool) => {
+        this.props.onClickCart(!bool)
+    }
+
+    changeCurrencySymbol = () => {
+        return (
+            localStorage.getItem('currency') !== this.state.currency
+                ?
+                this.state?.currencies?.map(i =>
+                    i.symbol
+                )
+                :
+                '$'
+        )
+    }
+
     render = () => {
         return (
             <header className={styles.header}>
@@ -63,10 +104,24 @@ class Header extends Component {
                     <img src='/img/logo.svg' alt='logo' />
                 </div>
                 <section className={styles.actions}>
-                    <CurrencySwitcher />
-                    <NavLink to='/all/cart'>
-                        <Cart />
-                    </NavLink>
+                    <div
+                        onClick={() => this.onClickSwitcher(this.props.switcherOpened)}
+                        className={styles.switcher}
+                    >
+                        <span className={styles.switcherCurrency}>
+                            {/* {console.log(this.changeCurrencySymbol())} */}
+                        </span>
+                        {
+                            this.props.switcherOpened
+                                ?
+                                <img style={{ transform: `rotate(0deg)` }} className={styles.switcherArrow} src='/img/arrowDown.svg' alt='arrow' />
+                                :
+                                <img style={{ transform: `rotate(180deg)` }} className={styles.switcherArrow} src='/img/arrowDown.svg' alt='arrow' />
+                        }
+                    </div>
+                    <div onClick={() => this.onClickCart(this.props.cartOpened)} className={styles.drawer}>
+                        <img className={styles.cartImg} src='/img/cart.svg' alt='cart' />
+                    </div>
                 </section>
             </header>
         );
