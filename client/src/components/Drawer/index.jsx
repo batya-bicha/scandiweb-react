@@ -11,6 +11,7 @@ class Drawer extends Component {
     }
 
     closeDrawer = (e) => {
+        console.log(1)
         return e.target.className.includes('overlay') ? this.props.onDrawer() : null;
     }
 

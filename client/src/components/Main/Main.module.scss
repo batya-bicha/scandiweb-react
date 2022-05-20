@@ -1,14 +1,14 @@
-.main{
+.main {
     width: 1280px;
-    padding-top: 80px;
+    padding-top: 160px;
     position: relative;
 
-    .category{
+    .category {
         font-size: 42px;
         margin-bottom: 100px;
     }
-    
-    .container{
+
+    .container {
         display: grid;
         gap: 0 40px;
         grid-auto-flow: row;
@@ -18,5 +18,14 @@
             ". . ."
             ". . .";
         width: 100%;
+
+        a {
+            height: 450px;
+            margin-bottom: 100px;
+        }
+    }
+
+    &.mainHidden {
+        overflow: hidden;
     }
 }

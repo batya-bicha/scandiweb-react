@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import styles from './Cart.module.scss';
 import CartItem from '../../components/CartItem';
 import { NavLink } from 'react-router-dom';
+import CurrencySwitcher from '../../components/CurrencySwitcher';
 
 
 class Cart extends Component {
@@ -46,25 +47,25 @@ class Cart extends Component {
     }
 
     matchСheck = () => {
-        let a = 1;
-        if (this.state?.items?.length) {
-            for (let i = 0; i < this.state.items.length; i++) {
-                if (JSON.stringify(this.state.items[i]) === JSON.stringify(this.state.items[i + 1])) {
-                    ++a
-                }
-            }
-        }
-        console.log(a)
+        // console.log(this.state?.items[1].currentAttributes)
     }
 
     order = () => {
         localStorage.clear();
     }
 
-
     render = () => {
         return (
             <div className={styles.cart}>
+                {
+                    this.props.switcherOpened
+                    &&
+                    <CurrencySwitcher
+                        client={this.props.client}
+                        onSwitcher={this.props.onClickSwitcher}
+                        setCurrency={this.props.setCurrency}
+                    />
+                }
                 <h2 className={styles.category}>{this.getUrl()}</h2>
                 {
                     this.state?.items === null

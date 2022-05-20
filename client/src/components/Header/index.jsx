@@ -83,15 +83,20 @@ class Header extends Component {
     }
 
     changeCurrencySymbol = () => {
-        return (
-            localStorage.getItem('currency') !== this.state.currency
-                ?
-                this.state?.currencies?.map(i =>
-                    i.symbol
-                )
-                :
-                '$'
-        )
+        switch (localStorage.getItem('currency')) {
+            case "USD":
+                return '$';
+            case "GBP":
+                return '£';
+            case "AUD":
+                return 'A$';
+            case "JPY":
+                return '¥';
+            case "RUB":
+                return '₽';
+            default:
+                return '$'
+        }
     }
 
     render = () => {
@@ -105,11 +110,11 @@ class Header extends Component {
                 </div>
                 <section className={styles.actions}>
                     <div
-                        onClick={() => this.onClickSwitcher(this.props.switcherOpened)}
+                        onClick={() => this.onClickSwitcher(this.props.switcherOpened, false)}
                         className={styles.switcher}
                     >
                         <span className={styles.switcherCurrency}>
-                            {/* {console.log(this.changeCurrencySymbol())} */}
+                            {this.changeCurrencySymbol()}
                         </span>
                         {
                             this.props.switcherOpened
@@ -119,7 +124,7 @@ class Header extends Component {
                                 <img style={{ transform: `rotate(180deg)` }} className={styles.switcherArrow} src='/img/arrowDown.svg' alt='arrow' />
                         }
                     </div>
-                    <div onClick={() => this.onClickCart(this.props.cartOpened)} className={styles.drawer}>
+                    <div onClick={() => this.onClickCart(this.props.cartOpened, false)} className={styles.drawer}>
                         <img className={styles.cartImg} src='/img/cart.svg' alt='cart' />
                     </div>
                 </section>

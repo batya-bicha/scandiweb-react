@@ -12,7 +12,9 @@ class Main extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {}
+        this.state = {
+            currency: null
+        }
     }
 
     getProducts = async () => {
@@ -61,11 +63,24 @@ class Main extends Component {
 
     componentDidMount = () => {
         this.getProducts();
+        this.setState(
+            {
+                currency: localStorage.getItem('currency')
+            }
+        )
     }
 
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.location.pathname !== prevProps.location.pathname) {
             this.getProducts();
+        }
+
+        if (this.props.currency !== prevProps.currency) {
+            this.setState(
+                {
+                    currency: localStorage.getItem('currency')
+                }
+            )
         }
     }
 
@@ -75,9 +90,22 @@ class Main extends Component {
         )
     }
 
+    renderFakeCards = () => {
+        return (
+            this.state.products?.category.products.length <= 2
+                ?
+                <Card
+                    fakeCard={'fakeCard'}
+                    number={3 - this.state.products?.category.products.length}
+                />
+                :
+                null
+        )
+    }
+
     render = () => {
         return (
-            <main className={styles.main}>
+            <main className={this.props.cartOpened ? (styles.main + ' ' + styles.mainHidden) : styles.main}>
                 {
                     this.props.switcherOpened
                     &&
@@ -109,18 +137,11 @@ class Main extends Component {
                                 prices={i.prices}
                                 brand={i.brand}
                                 addToCart={this.props.addToCart}
+                                currency={this.state.currency}
                             />
                         </NavLink>
                     )}
-                    {this.state.products?.category.products.length <= 2
-                        ?
-                        <Card
-                            fakeCard={'fakeCard'}
-                            number={3 - this.state.products?.category.products.length}
-                        />
-                        :
-                        null
-                    }
+                    {this.renderFakeCards()}
                 </section>
             </main>
         );

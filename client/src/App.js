@@ -22,25 +22,21 @@ class App extends Component {
       product: {},
       cartOpened: false,
       switcherOpened: false,
-      currency: null
+      currency: 'USD'
     }
   }
 
-  addToCart = (__typename, id, name, inStock, gallery, description, category, attributes, prices, brand, quantity) => {
+  addToCart = (id, name, gallery, description, attributes, prices, brand) => {
     this.setState(
       {
         product: {
-          __typename: __typename,
           id: id,
           name: name,
-          inStock: inStock,
           gallery: gallery,
           description: description,
-          category: category,
           attributes: attributes,
           prices: prices,
           brand: brand,
-          // quantity: quantity,
         }
       }
     )
@@ -49,36 +45,52 @@ class App extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.product.id !== prevState.product.id) {
       this.addItemsToStorage(this.state.product)
-
     }
 
     if (this.state.currency !== prevState.currency) {
-      // console.log(this.state.currency)
+      this.setState(
+        {
+          currency: localStorage.getItem('currency')
+        }
+      )
     }
   }
 
   addItemsToStorage = (item) => {
     const items = JSON.parse(localStorage.getItem('items'));
     if (items?.length) {
-      items.push(item)
-      localStorage.setItem("items", JSON.stringify(Array.from(new Set(items))));
+      let flag = false;
+      for (let i = 0; i < items.length; i++) {
+        if (item.id === items[i].id) {
+          flag = true;
+          break;
+        }
+      }
+      if (flag) {
+        console.log('not unique');
+      } else {
+        items.push(item);
+        localStorage.setItem("items", JSON.stringify(items));
+      }
     } else {
       localStorage.setItem("items", JSON.stringify([item]));
     }
   }
 
-  setCartOpened = (bool) => {
+  setCartOpened = (bool, switchBool) => {
     this.setState(
       {
         cartOpened: bool,
+        switcherOpened: switchBool,
       }
     )
   }
 
-  setSwitcherOpened = (bool) => {
+  setSwitcherOpened = (bool, cartBool) => {
     this.setState(
       {
         switcherOpened: bool,
+        cartOpened: cartBool,
       }
     )
   }
@@ -92,10 +104,14 @@ class App extends Component {
     )
   }
 
+  componentDidMount = () => {
+    localStorage.setItem('currency', this.state.currency)
+  }
+
 
   render = () => {
     return (
-      <div className="App">
+      <div style={this.state.cartOpened ? { paddingRight: '17px' } : null} className="App">
         <Header
           client={this.state.client}
           onClickCart={this.setCartOpened}
@@ -114,23 +130,31 @@ class App extends Component {
               onClickSwitcher={this.setSwitcherOpened}
               onClickCart={this.setCartOpened}
               setCurrency={this.setCurrency}
+              currency={this.state.currency}
             />
           </Route>
           <Route path='/:id/:id' exact>
             <Cart
-            // client={this.state.client}
-            // id={this.state.id}
+              switcherOpened={this.state.switcherOpened}
+              onClickSwitcher={this.setSwitcherOpened}
+              setCurrency={this.setCurrency}
+              currency={this.state.currency}
+              client={this.state.client}
             />
           </Route>
           <Route path='/:id/product/:id' exact>
             <Product
               cartOpened={this.state.cartOpened}
+              switcherOpened={this.state.switcherOpened}
+              onClickSwitcher={this.setSwitcherOpened}
               onClickCart={this.setCartOpened}
+              setCurrency={this.setCurrency}
+              currency={this.state.currency}
               client={this.state.client}
             />
           </Route>
         </Switch>
-      </div>
+      </div >
     );
   }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import styles from './Card.module.scss';
 
 class Card extends Component {
@@ -8,7 +9,7 @@ class Card extends Component {
         this.state = {
             handler: false,
             quantity: 1,
-            __typename: 'Product'
+            currency: 'USD'
         }
     }
 
@@ -27,17 +28,13 @@ class Card extends Component {
     addToCart = (e) => {
         e.preventDefault();
         this.props.addToCart(
-            this.state.__typename,
             this.props.id,
             this.props.name,
-            this.props.inStock,
             this.props.gallery,
             this.props.description,
-            this.props.category,
             this.props.attributes,
             this.props.prices,
             this.props.brand,
-            // this.state.quantity,
         )
     }
 
@@ -59,11 +56,23 @@ class Card extends Component {
                 <div className={styles.cardDesc}>
                     <span className={styles.cardName}>{this.props.name + ' ' + this.props.brand}</span>
                     <span className={styles.cardCost}>
-                        {this.state.currency}
-                        {/* {this.props.prices[0].currency.symbol + this.props.prices[0]?.amount} */}
+                        {this.setCardCurrency()}
+                        {/* {console.log(this.state.currency)} */}
                     </span>
                 </div>
             </div>
+        )
+    }
+
+    setCardCurrency = () => {
+        return (
+            this.props?.prices?.map(i =>
+                i.currency.label === this.state.currency
+                    ?
+                    i.currency.symbol + '' + i.amount
+                    :
+                    null
+            )
         )
     }
 
@@ -87,21 +96,22 @@ class Card extends Component {
     componentDidMount = () => {
         this.setState(
             {
-                currency: localStorage.getItem('currency')
+                currency: localStorage.getItem('currency'),
+                url: this.props.match.params.id
             }
         )
     }
 
     componentDidUpdate = (prevProps, prevState) => {
-        if (this.state.currency !== prevState.currency) {
+        if (this.props.currency !== prevProps.currency || this.state.currency !== localStorage.getItem('currency')) {
             this.setState(
                 {
                     currency: localStorage.getItem('currency')
                 }
             )
         }
-        // console.log(this.state.currency, prevState.currency)
     }
+
 
 
     render = () => {
@@ -111,4 +121,4 @@ class Card extends Component {
     }
 }
 
-export default Card;
+export default withRouter(Card);

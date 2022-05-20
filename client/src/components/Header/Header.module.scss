@@ -6,7 +6,8 @@
     height: 80px;
     background: #fff;
     max-width: 1280px;
-    position: relative;
+    position: fixed;
+    z-index: 1002;
 
     .active {
         color: rgba(94, 206, 123, 1) !important;

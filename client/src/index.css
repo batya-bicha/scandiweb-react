@@ -7,10 +7,6 @@
     -ms-overflow-style: none;
 }
 
-*::-webkit-scrollbar {
-    width: 0;
-}
-
 *,
 *:before,
 *:after {
@@ -77,9 +73,10 @@ ul li {
 }
 
 img {
-    image-rendering: -moz-crisp-edges; /* Firefox */
-    -ms-interpolation-mode: nearest-neighbor;  /* IE */
-    image-rendering: crisp-edges; /* Стандартное свойство */
+    image-rendering: -moz-crisp-edges; 
+    -ms-interpolation-mode: nearest-neighbor; 
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges; 
     vertical-align: top;
 }
 

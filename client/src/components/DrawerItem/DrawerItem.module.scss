@@ -5,7 +5,6 @@
     margin-bottom: 40px;
 
     .drawerItem {
-        // height: 190px;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -36,17 +35,17 @@
                 display: flex;
                 flex-direction: column;
 
+                .attributeName {
+                    display: flex;
+                    font-weight: 400;
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                }
+
                 .attributeSize {
                     display: flex;
                     flex-direction: column;
                     margin-bottom: 8px;
-
-                    .attributeName {
-                        display: flex;
-                        font-weight: 400;
-                        font-size: 14px;
-                        margin-bottom: 8px;
-                    }
 
                     .attributeList {
                         display: flex;
@@ -60,7 +59,6 @@
                             font-size: 14px;
                             width: 24px;
                             height: 24px;
-                            color: rgb(163, 163, 163);
                             border: 1px solid #1d1f22;
                             color: inherit;
                             margin-right: 8px;
@@ -69,7 +67,7 @@
                         }
 
                         .active {
-                            color: rgb(163, 163, 163);
+                            color: #fff;
                             background: #3c3d3f;
                         }
 
@@ -88,13 +86,6 @@
                     flex-direction: column;
                     margin-bottom: 8px;
 
-                    .attributeName {
-                        display: flex;
-                        font-weight: 400;
-                        font-size: 14px;
-                        margin-bottom: 8px;
-                    }
-
                     .attributeList {
                         display: flex;
                         flex-wrap: wrap;
@@ -104,10 +95,10 @@
                             justify-content: center;
                             align-items: center;
                             font-family: "Source Sans Pro", sans-serif;
-                            font-size: 9.5px;
-                            width: 26px;
-                            height: 26px;
-                            outline: 1px solid #1d1f22;
+                            font-size: 11px;
+                            width: 35px;
+                            height: 24px;
+                            border: 1px solid #1d1f22;
                             color: inherit;
                             margin-right: 8px;
                             overflow: hidden;
@@ -116,16 +107,12 @@
 
                         .active {
                             color: #fff;
-                            background: #1d1f22;
+                            background: #3c3d3f;
                         }
 
                         :last-child {
                             margin-right: 0;
                         }
-                    }
-
-                    :last-child {
-                        margin-bottom: 0;
                     }
                 }
 
@@ -162,6 +149,70 @@
 
                         :last-child {
                             margin-right: 0;
+                        }
+                    }
+                }
+
+                .attributeUSB {
+                    margin-bottom: 8px;
+
+                    .attributeList {
+                        display: flex;
+
+                        .attributeItem {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 14px;
+                            width: 24px;
+                            height: 24px;
+                            border: 1px solid #1d1f22;
+                            color: inherit;
+                            margin-right: 8px;
+                            overflow: hidden;
+                            cursor: not-allowed;
+
+                            &.active {
+                                color: #fff;
+                                background: #1d1f22;
+                            }
+
+                            :last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+
+                .attributeSizeTouchID {
+                    margin-bottom: 8px;
+
+                    .attributeList {
+                        display: flex;
+
+                        .attributeItem {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-family: "Source Sans Pro", sans-serif;
+                            font-size: 14px;
+                            width: 24px;
+                            height: 24px;
+                            border: 1px solid #1d1f22;
+                            color: inherit;
+                            margin-right: 8px;
+                            overflow: hidden;
+                            cursor: not-allowed;
+
+                            &.active {
+                                color: #fff;
+                                background: #1d1f22;
+                            }
+
+                            :last-child {
+                                margin-right: 0;
+                            }
                         }
                     }
                 }

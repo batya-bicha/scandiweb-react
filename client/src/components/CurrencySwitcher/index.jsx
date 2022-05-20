@@ -25,7 +25,7 @@ class CurrencySwitcher extends Component {
 
         this.setState(
             {
-                currencies: currencies.data.currencies
+                currencies: currencies.data.currencies,
             }
         );
     }
@@ -54,9 +54,15 @@ class CurrencySwitcher extends Component {
     renderCurrencies = () => {
         return (
             this.state.currencies?.map(i =>
-                <div onClick={() => this.setCurrency(i.label)} key={i.symbol} className={styles.currency}>
-                    <span className={styles.currencyText}>{i.symbol + ' ' + i.label}</span>
-                </div>
+                i.label === localStorage.getItem('currency')
+                    ?
+                    <div onClick={() => this.setCurrency(i.label)} key={i.symbol} className={styles.currency + ' ' + styles.active}>
+                        <span className={styles.currencyText}>{i.symbol + ' ' + i.label}</span>
+                    </div>
+                    :
+                    <div onClick={() => this.setCurrency(i.label)} key={i.symbol} className={styles.currency}>
+                        <span className={styles.currencyText}>{i.symbol + ' ' + i.label}</span>
+                    </div>
             )
         )
     }

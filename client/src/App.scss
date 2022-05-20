@@ -1,12 +1,11 @@
 $font-stack: "Raleway", sans-serif;
 $font-color: rgba(29, 31, 34, 1);
 
-
-#root{
+#root {
     background: #fff;
     height: 100%;
 
-    .App{
+    .App {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -17,16 +16,15 @@ $font-color: rgba(29, 31, 34, 1);
         color: $font-color;
         font-family: $font-stack;
 
-
-        :link{
+        :link {
             color: inherit;
         }
 
-        :active{
+        :active {
             color: inherit;
         }
 
-        :visited{
+        :visited {
             color: inherit;
         }
     }

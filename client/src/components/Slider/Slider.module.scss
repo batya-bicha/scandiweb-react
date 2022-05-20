@@ -1,59 +1,59 @@
-.slider{
+.slider {
     position: relative;
     height: 100%;
 
-    .sliderContainer{
+    .sliderContainer {
         height: 100%;
         width: 200px;
-        
-        .sliderLine{
+
+        .sliderLine {
             height: 100%;
             width: 100%;
             overflow: hidden;
 
-            .slideContainer{
+            .slideContainer {
                 display: flex;
                 height: 100%;
                 width: 100%;
 
-                img{
+                img {
                     object-fit: contain;
                 }
-            }            
+            }
         }
     }
 
-    .sliderBtns{
+    .sliderBtns {
         display: flex;
         justify-content: space-between;
         width: 56px;
         position: absolute;
         top: 85%;
         left: 60%;
-        z-index: 9999;
-    
-        .prev{
+        z-index: 999;
+
+        .prev {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 24px;
             height: 24px;
             background: rgba(0, 0, 0, 0.73);
-    
-            img{
+
+            img {
                 margin-right: 2px;
             }
         }
-    
-        .next{
+
+        .next {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 24px;
             height: 24px;
             background: rgba(0, 0, 0, 0.73);
-    
-            img{
+
+            img {
                 transform: rotate(180deg);
                 margin-left: 2px;
             }

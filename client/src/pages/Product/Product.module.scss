@@ -1,5 +1,5 @@
 .product {
-    padding-top: 80px;
+    padding-top: 160px;
     width: 1280px;
     display: flex;
 
@@ -56,6 +56,7 @@
         display: flex;
         flex-direction: column;
         margin-right: 100px;
+        position: relative;
 
         .productTitle {
             margin-bottom: 40px;
@@ -297,6 +298,15 @@
             p {
                 margin-bottom: 13px;
             }
+        }
+
+        .inStock {
+            position: absolute;
+            padding: 20px;
+            width: 120%;
+            height: 100%;
+            background: rgba(57, 55, 72, 0.22);
+            z-index: 1;
         }
     }
 }

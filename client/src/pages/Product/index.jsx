@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import styles from './Product.module.scss';
 import parse from 'html-react-parser';
 import Drawer from '../../components/Drawer';
+import CurrencySwitcher from '../../components/CurrencySwitcher';
 
 class Product extends Component {
     constructor(props) {
@@ -14,11 +15,20 @@ class Product extends Component {
             currentAttibuteSize: null,
             currentAttibuteUSB: null,
             currentAttibuteTouchID: null,
-            currentAttributes: {
-                color: null,
-                size: null,
-                usb: null,
-                touchID: null,
+            currentProduct: {
+                id: null,
+                name: null,
+                gallery: null,
+                description: null,
+                attributes: null,
+                prices: null,
+                brand: null,
+                currentAttributes: {
+                    color: null,
+                    size: null,
+                    usb: null,
+                    touchID: null,
+                },
             }
         }
     }
@@ -63,16 +73,6 @@ class Product extends Component {
         )
     }
 
-    addItemsToStorage = (item) => {
-        const items = JSON.parse(localStorage.getItem('items'));
-        if (items?.length) {
-            items.push(item)
-            localStorage.setItem("items", JSON.stringify(Array.from(new Set(items))));
-        } else {
-            localStorage.setItem("items", JSON.stringify([item]));
-        }
-    }
-
     componentDidMount = () => {
         this.getProductById()
     }
@@ -84,11 +84,20 @@ class Product extends Component {
         if (this.state.currentAttibuteColor !== prevState.currentAttibuteColor || this.state.currentAttibuteSize !== prevState.currentAttibuteSize || this.state.currentAttibuteUSB !== prevState.currentAttibuteUSB || this.state.currentAttibuteTouchID !== prevState.currentAttibuteTouchID) {
             this.setState(
                 {
-                    currentAttributes: {
-                        color: this.state.currentAttibuteColor,
-                        size: this.state.currentAttibuteSize,
-                        usb: this.state.currentAttibuteUSB,
-                        touchID: this.state.currentAttibuteTouchID,
+                    currentProduct: {
+                        id: this.state.product.id,
+                        name: this.state.product.name,
+                        gallery: this.state.product.gallery,
+                        description: this.state.product.description,
+                        attributes: this.state.product.attributes,
+                        prices: this.state.product.prices,
+                        brand: this.state.product.brand,
+                        currentAttributes: {
+                            color: this.state.currentAttibuteColor,
+                            size: this.state.currentAttibuteSize,
+                            usb: this.state.currentAttibuteUSB,
+                            touchID: this.state.currentAttibuteTouchID,
+                        }
                     }
                 }
             )
@@ -180,28 +189,26 @@ class Product extends Component {
     createProductAttributesColor = (index) => {
         return (
             <ul className={styles.attributeList}>
-                {
-                    this.state.product?.attributes[index].items.map((i, index) =>
-                        <li
-                            key={i.value}
-                            className={styles.attributeItem}
+                {this.state.product?.attributes[index].items.map((i, index) =>
+                    <li
+                        key={i.value}
+                        className={styles.attributeItem}
+                    >
+                        <button
+                            onClick={() => this.setSelectedAttributeColor(i)}
+                            value={i.value}
+                            style={{ backgroundColor: i.value }}
+                            className={this.state.currentAttibuteColor === i.value
+                                ?
+                                styles.active
+                                :
+                                ''
+                            }
                         >
-                            <button
-                                onClick={() => this.setSelectedAttributeColor(i)}
-                                value={i.value}
-                                style={{ backgroundColor: i.value }}
-                                className={this.state.currentAttibuteColor === i.value
-                                    ?
-                                    styles.active
-                                    :
-                                    ''
-                                }
-                            >
-                                {i.value.includes('#') ? null : i.value}
-                            </button>
-                        </li>
-                    )
-                }
+                            {i.value.includes('#') ? null : i.value}
+                        </button>
+                    </li>
+                )}
             </ul>
         )
     }
@@ -209,28 +216,26 @@ class Product extends Component {
     createProductAttributesSize = (index) => {
         return (
             <ul className={styles.attributeList}>
-                {
-                    this.state.product?.attributes[index].items.map((i, index) =>
-                        <li
-                            key={i.value}
-                            className={styles.attributeItem}
+                {this.state.product?.attributes[index].items.map((i, index) =>
+                    <li
+                        key={i.value}
+                        className={styles.attributeItem}
+                    >
+                        <button
+                            onClick={() => this.setSelectedAttributeSize(i)}
+                            value={i.value}
+                            style={{ backgroundColor: i.value }}
+                            className={this.state.currentAttibuteSize === i.value
+                                ?
+                                styles.active
+                                :
+                                ''
+                            }
                         >
-                            <button
-                                onClick={() => this.setSelectedAttributeSize(i)}
-                                value={i.value}
-                                style={{ backgroundColor: i.value }}
-                                className={this.state.currentAttibuteSize === i.value
-                                    ?
-                                    styles.active
-                                    :
-                                    ''
-                                }
-                            >
-                                {i.value.includes('#') ? null : i.value}
-                            </button>
-                        </li>
-                    )
-                }
+                            {i.value.includes('#') ? null : i.value}
+                        </button>
+                    </li>
+                )}
             </ul>
         )
     }
@@ -293,12 +298,23 @@ class Product extends Component {
         )
     }
 
-    //? ВАЛЮТА
+    setProductCurrency = () => {
+        return (
+            this.state?.product?.prices.map(i =>
+                i.currency.label === localStorage.getItem('currency')
+                    ?
+                    i.currency.symbol + '' + i.amount
+                    :
+                    null
+            )
+        )
+    }
+
     renderProductCurrency = () => {
         return (
             <div className={styles.productPrice}>
                 <span className={styles.priceName}>PRICE:</span>
-                <span className={styles.productAmount}>{this.state.product?.prices[0].currency.symbol + '' + this.state.product?.prices[0].amount}</span>
+                <span className={styles.productAmount}>{this.setProductCurrency()}</span>
             </div>
         )
     }
@@ -350,19 +366,49 @@ class Product extends Component {
         )
     }
 
+    addItemsToStorage = (item) => {
+        const items = JSON.parse(localStorage.getItem('items'));
+        if (items?.length) {
+            let flag = false;
+            for (let i = 0; i < items.length; i++) {
+                if (item.id === items[i].id && JSON.stringify(item.currentAttributes) === JSON.stringify(items[i].currentAttributes)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
+                console.log('not unique');
+            } else {
+                items.push(item);
+                localStorage.setItem("items", JSON.stringify(items));
+            }
+        } else {
+            localStorage.setItem("items", JSON.stringify([item]));
+        }
+    }
+
     addToCart = (product) => {
         this.setState(
             {
-                currentAttributes: {
-                    color: this.state.currentAttibuteColor,
-                    size: this.state.currentAttibuteSize,
-                    usb: this.state.currentAttibuteUSB,
-                    touchID: this.state.currentAttibuteTouchID,
+                currentProduct: {
+                    id: product.id,
+                    name: product.name,
+                    gallery: product.gallery,
+                    description: product.description,
+                    attributes: product.attributes,
+                    prices: product.prices,
+                    brand: product.brand,
+                    currentAttributes: {
+                        color: this.state.currentAttibuteColor,
+                        size: this.state.currentAttibuteSize,
+                        usb: this.state.currentAttibuteUSB,
+                        touchID: this.state.currentAttibuteTouchID,
+                    }
                 }
+
             }
         )
-        // this.addItemsToStorage(product)
-        console.log(product)
+        this.addItemsToStorage(this.state.currentProduct)
     }
 
     disableBtn = (product) => {
@@ -378,7 +424,7 @@ class Product extends Component {
                 :
                 product?.attributes.length === 1
                     ?
-                    this.state.currentAttributes[product.attributes[0].name.toLowerCase()] === null
+                    this.state.currentProduct?.currentAttributes[product.attributes[0].name.toLowerCase()] === null
                         ?
                         <button
                             disabled={true}
@@ -394,7 +440,7 @@ class Product extends Component {
                             ADD TO CART
                         </button>
                     :
-                    product?.attributes.length === 2 && ((this.state.currentAttributes.color === null || this.state.currentAttributes.size === null))
+                    product?.attributes.length === 2 && ((this.state.currentProduct?.currentAttributes.color === null || this.state.currentProduct?.currentAttributes.size === null))
                         ?
                         <button
                             disabled={true}
@@ -403,7 +449,7 @@ class Product extends Component {
                             SELECT ATTRIBUTES
                         </button>
                         :
-                        product?.attributes.length === 3 && ((this.state.currentAttributes.size === null || this.state.currentAttributes.usb === null || this.state.currentAttributes.touchID === null))
+                        product?.attributes.length === 3 && ((this.state.currentProduct?.currentAttributes.size === null || this.state.currentProduct?.currentAttributes.usb === null || this.state.currentProduct?.currentAttributes.touchID === null))
                             ?
                             <button
                                 disabled={true}
@@ -422,13 +468,23 @@ class Product extends Component {
     }
 
 
-
     render = () => {
         return (
             <div className={styles.product}>
-                {this.props.cartOpened &&
+                {
+                    this.props.switcherOpened
+                    &&
+                    <CurrencySwitcher
+                        client={this.props.client}
+                        onSwitcher={this.props.onClickSwitcher}
+                        setCurrency={this.props.setCurrency}
+                    />
+                }
+                {
+                    this.props.cartOpened
+                    &&
                     <Drawer
-                        onClose={this.props.onClickCart}
+                        onDrawer={this.props.onClickCart}
                     />
                 }
                 {this.renderProductGallery()}
