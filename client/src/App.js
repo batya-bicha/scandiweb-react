@@ -19,14 +19,16 @@ class App extends Component {
         uri: 'http://localhost:4000/',
         cache: new InMemoryCache(),
       }),
-      product: {},
+      product: {
+        quantity: 0,
+      },
       cartOpened: false,
       switcherOpened: false,
-      currency: 'USD'
+      currency: 'USD',
     }
   }
 
-  addToCart = (id, name, gallery, description, attributes, prices, brand) => {
+  addToCart = (id, name, gallery, description, attributes, prices, brand, currentAttributes, quantity) => {
     this.setState(
       {
         product: {
@@ -37,6 +39,8 @@ class App extends Component {
           attributes: attributes,
           prices: prices,
           brand: brand,
+          currentAttributes: currentAttributes,
+          quantity: quantity,
         }
       }
     )
@@ -53,6 +57,9 @@ class App extends Component {
           currency: localStorage.getItem('currency')
         }
       )
+    }
+    if (this.state.product.quantity !== prevState.product.quantity) {
+      this.addItemsToStorage(this.state.product)
     }
   }
 
@@ -111,7 +118,7 @@ class App extends Component {
 
   render = () => {
     return (
-      <div style={this.state.cartOpened ? { paddingRight: '17px' } : null} className="App">
+      <div className="App">
         <Header
           client={this.state.client}
           onClickCart={this.setCartOpened}
@@ -135,11 +142,15 @@ class App extends Component {
           </Route>
           <Route path='/:id/:id' exact>
             <Cart
+              cartOpened={this.state.cartOpened}
+              onClickCart={this.setCartOpened}
               switcherOpened={this.state.switcherOpened}
               onClickSwitcher={this.setSwitcherOpened}
               setCurrency={this.setCurrency}
               currency={this.state.currency}
               client={this.state.client}
+
+              addToCart={this.addToCart}
             />
           </Route>
           <Route path='/:id/product/:id' exact>
@@ -154,7 +165,7 @@ class App extends Component {
             />
           </Route>
         </Switch>
-      </div >
+      </div>
     );
   }
 

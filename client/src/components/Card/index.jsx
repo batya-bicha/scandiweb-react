@@ -9,7 +9,13 @@ class Card extends Component {
         this.state = {
             handler: false,
             quantity: 1,
-            currency: 'USD'
+            currency: 'USD',
+            currentAttributes: {
+                color: null,
+                size: null,
+                usb: null,
+                touchID: null,
+            },
         }
     }
 
@@ -27,6 +33,7 @@ class Card extends Component {
 
     addToCart = (e) => {
         e.preventDefault();
+
         this.props.addToCart(
             this.props.id,
             this.props.name,
@@ -35,6 +42,8 @@ class Card extends Component {
             this.props.attributes,
             this.props.prices,
             this.props.brand,
+            this.state.currentAttributes,
+            this.state.quantity,
         )
     }
 
@@ -57,7 +66,6 @@ class Card extends Component {
                     <span className={styles.cardName}>{this.props.name + ' ' + this.props.brand}</span>
                     <span className={styles.cardCost}>
                         {this.setCardCurrency()}
-                        {/* {console.log(this.state.currency)} */}
                     </span>
                 </div>
             </div>
@@ -97,7 +105,13 @@ class Card extends Component {
         this.setState(
             {
                 currency: localStorage.getItem('currency'),
-                url: this.props.match.params.id
+                url: this.props.match.params.id,
+                currentAttributes: {
+                    color: (this.props?.attributes?.map(i => i?.name === 'Color' ? i?.items[0]?.value : null))?.filter(i => i !== null)[0] ?? null,
+                    size: (this.props?.attributes?.map(i => i?.name === 'Size' || i?.name === 'Capacity' ? i?.items[0]?.value : null))?.filter(i => i !== null)[0] ?? null,
+                    usb: (this.props?.attributes?.map(i => i?.name === 'With USB 3 ports' ? i?.items[0]?.value : null))?.filter(i => i !== null)[0] ?? null,
+                    touchID: (this.props?.attributes?.map(i => i?.name === 'Touch ID in keyboard' ? i?.items[0]?.value : null))?.filter(i => i !== null)[0] ?? null,
+                }
             }
         )
     }
@@ -111,8 +125,6 @@ class Card extends Component {
             )
         }
     }
-
-
 
     render = () => {
         return (

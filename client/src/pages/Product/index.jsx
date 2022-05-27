@@ -11,6 +11,7 @@ class Product extends Component {
         super(props)
 
         this.state = {
+            noAttributes: null,
             currentAttibuteColor: null,
             currentAttibuteSize: null,
             currentAttibuteUSB: null,
@@ -29,7 +30,8 @@ class Product extends Component {
                     usb: null,
                     touchID: null,
                 },
-            }
+            },
+            quantity: 1,
         }
     }
 
@@ -69,6 +71,7 @@ class Product extends Component {
         this.setState(
             {
                 product: product.data.product,
+                noAttributes: product.data.product.attributes.length === 0 ? true : null
             }
         )
     }
@@ -81,7 +84,13 @@ class Product extends Component {
         if (this.state.product?.gallery[0] !== prevState.product?.gallery[0]) {
             this.showBigImg(this.state.product?.gallery[0])
         }
-        if (this.state.currentAttibuteColor !== prevState.currentAttibuteColor || this.state.currentAttibuteSize !== prevState.currentAttibuteSize || this.state.currentAttibuteUSB !== prevState.currentAttibuteUSB || this.state.currentAttibuteTouchID !== prevState.currentAttibuteTouchID) {
+
+        if (this.state.currentAttibuteColor !== prevState.currentAttibuteColor
+            || this.state.currentAttibuteSize !== prevState.currentAttibuteSize
+            || this.state.currentAttibuteUSB !== prevState.currentAttibuteUSB
+            || this.state.currentAttibuteTouchID !== prevState.currentAttibuteTouchID
+            || this.state.noAttributes !== prevState.noAttributes) {
+
             this.setState(
                 {
                     currentProduct: {
@@ -97,7 +106,8 @@ class Product extends Component {
                             size: this.state.currentAttibuteSize,
                             usb: this.state.currentAttibuteUSB,
                             touchID: this.state.currentAttibuteTouchID,
-                        }
+                        },
+                        quantity: this.state.quantity,
                     }
                 }
             )
@@ -153,28 +163,28 @@ class Product extends Component {
                                 ?
                                 <div key={index} className={styles.attributeColor}>
                                     <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                    {this.createProductAttributesColor(index)}
+                                    {this.createProductAttributes(index, 'currentAttibuteColor', 'setSelectedAttributeColor')}
                                 </div>
                                 :
                                 i.name.toLowerCase() === 'size' || i.name.toLowerCase() === 'capacity'
                                     ?
                                     <div key={index} className={styles.attributeSize}>
                                         <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                        {this.createProductAttributesSize(index)}
+                                        {this.createProductAttributes(index, 'currentAttibuteSize', 'setSelectedAttributeSize')}
                                     </div>
                                     :
                                     i.name.toLowerCase() === 'with usb 3 ports'
                                         ?
                                         <div key={index} className={styles.attributeUSB}>
                                             <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                            {this.createProductAttributesUSB(index)}
+                                            {this.createProductAttributes(index, 'currentAttibuteUSB', 'setSelectedAttributeUSD')}
                                         </div>
                                         :
                                         i.name.toLowerCase() === 'touch id in keyboard'
                                             ?
                                             <div key={index} className={styles.attributeSizeTouchID}>
                                                 <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                                {this.createProductAttributesTouchID(index)}
+                                                {this.createProductAttributes(index, 'currentAttibuteTouchID', 'setSelectedAttributeTouchID')}
                                             </div>
                                             :
                                             null
@@ -186,7 +196,7 @@ class Product extends Component {
         )
     }
 
-    createProductAttributesColor = (index) => {
+    createProductAttributes = (index, currenAttr, setAttr) => {
         return (
             <ul className={styles.attributeList}>
                 {this.state.product?.attributes[index].items.map((i, index) =>
@@ -195,10 +205,10 @@ class Product extends Component {
                         className={styles.attributeItem}
                     >
                         <button
-                            onClick={() => this.setSelectedAttributeColor(i)}
+                            onClick={() => this[setAttr](i)}
                             value={i.value}
                             style={{ backgroundColor: i.value }}
-                            className={this.state.currentAttibuteColor === i.value
+                            className={this.state[currenAttr] === i.value
                                 ?
                                 styles.active
                                 :
@@ -209,91 +219,6 @@ class Product extends Component {
                         </button>
                     </li>
                 )}
-            </ul>
-        )
-    }
-
-    createProductAttributesSize = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.state.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        className={styles.attributeItem}
-                    >
-                        <button
-                            onClick={() => this.setSelectedAttributeSize(i)}
-                            value={i.value}
-                            style={{ backgroundColor: i.value }}
-                            className={this.state.currentAttibuteSize === i.value
-                                ?
-                                styles.active
-                                :
-                                ''
-                            }
-                        >
-                            {i.value.includes('#') ? null : i.value}
-                        </button>
-                    </li>
-                )}
-            </ul>
-        )
-    }
-
-    createProductAttributesUSB = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {
-                    this.state.product?.attributes[index].items.map((i, index) =>
-                        <li
-                            key={i.value}
-                            className={styles.attributeItem}
-                        >
-                            <button
-                                onClick={() => this.setSelectedAttributeUSD(i)}
-                                value={i.value}
-                                style={{ backgroundColor: i.value }}
-                                className={this.state.currentAttibuteUSB === i.value
-                                    ?
-                                    styles.active
-                                    :
-                                    ''
-                                }
-                            >
-                                {i.value.includes('#') ? null : i.value}
-                            </button>
-                        </li>
-                    )
-                }
-            </ul>
-        )
-    }
-
-    createProductAttributesTouchID = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {
-                    this.state.product?.attributes[index].items.map((i, index) =>
-                        <li
-                            key={i.value}
-                            className={styles.attributeItem}
-                        >
-                            <button
-                                onClick={() => this.setSelectedAttributeTouchID(i)}
-                                value={i.value}
-                                style={{ backgroundColor: i.value }}
-                                className={this.state.currentAttibuteTouchID === i.value
-                                    ?
-                                    styles.active
-                                    :
-                                    ''
-                                }
-                            >
-                                {i.value.includes('#') ? null : i.value}
-                            </button>
-                        </li>
-                    )
-                }
             </ul>
         )
     }
@@ -319,7 +244,7 @@ class Product extends Component {
         )
     }
 
-    renderSomeDescription = () => {
+    renderDescription = () => {
         return (
             this.state.product?.description ? parse(this.state.product?.description) : ''
 
@@ -377,7 +302,7 @@ class Product extends Component {
                 }
             }
             if (flag) {
-                console.log('not unique');
+                localStorage.setItem("items", JSON.stringify(items));
             } else {
                 items.push(item);
                 localStorage.setItem("items", JSON.stringify(items));
@@ -387,7 +312,22 @@ class Product extends Component {
         }
     }
 
+    checkNoAttributes = () => {
+        return (
+            this.state.noAttributes
+                ?
+                this.setState(
+                    {
+                        noAttributes: false
+                    }
+                )
+                :
+                null
+        )
+    }
+
     addToCart = (product) => {
+        this.checkNoAttributes()
         this.setState(
             {
                 currentProduct: {
@@ -395,7 +335,7 @@ class Product extends Component {
                     name: product.name,
                     gallery: product.gallery,
                     description: product.description,
-                    attributes: product.attributes,
+                    attributes: product.attributes ? product.attributes : null,
                     prices: product.prices,
                     brand: product.brand,
                     currentAttributes: {
@@ -403,7 +343,8 @@ class Product extends Component {
                         size: this.state.currentAttibuteSize,
                         usb: this.state.currentAttibuteUSB,
                         touchID: this.state.currentAttibuteTouchID,
-                    }
+                    },
+                    quantity: this.state.quantity,
                 }
 
             }
@@ -490,11 +431,12 @@ class Product extends Component {
                 {this.renderProductGallery()}
                 <section className={styles.productInfoBlock}>
                     {this.renderProductTitle()}
+                    {this.state.quantity}
                     {this.renderProductAttributes()}
                     {this.renderProductCurrency()}
                     {this.disableBtn(this.state.product)}
                     <div className={styles.productDesc}>
-                        {this.renderSomeDescription()}
+                        {this.renderDescription()}
                     </div>
                 </section>
             </div>

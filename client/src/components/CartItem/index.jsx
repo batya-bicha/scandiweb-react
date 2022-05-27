@@ -7,7 +7,10 @@ class CartItem extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            quantity: 1,
+            product: null,
+        };
     }
 
     renderProductTitle = () => {
@@ -40,28 +43,28 @@ class CartItem extends Component {
                                 ?
                                 <div key={index} className={styles.attributeColor}>
                                     <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                    {this.createProductAttributesColor(index)}
+                                    {this.createProductAttributes(index, 'color')}
                                 </div>
                                 :
                                 i.name.toLowerCase() === 'size' || i.name.toLowerCase() === 'capacity'
                                     ?
                                     <div key={index} className={styles.attributeSize}>
                                         <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                        {this.createProductAttributesSize(index)}
+                                        {this.createProductAttributes(index, 'size')}
                                     </div>
                                     :
                                     i.name.toLowerCase() === 'with usb 3 ports'
                                         ?
                                         <div key={index} className={styles.attributeUSB}>
                                             <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                            {this.createProductAttributesUSB(index)}
+                                            {this.createProductAttributes(index, 'usb')}
                                         </div>
                                         :
                                         i.name.toLowerCase() === 'touch id in keyboard'
                                             ?
                                             <div key={index} className={styles.attributeSizeTouchID}>
                                                 <span className={styles.attributeName}>{i.name.toUpperCase()}:</span>
-                                                {this.createProductAttributesTouchID(index)}
+                                                {this.createProductAttributes(index, 'touchID')}
                                             </div>
                                             :
                                             null
@@ -73,18 +76,18 @@ class CartItem extends Component {
         )
     }
 
-    createProductAttributesColor = (index) => {
+    createProductAttributes = (index, name) => {
         return (
             <ul className={styles.attributeList}>
                 {this.props.product?.attributes[index].items.map((i, index) =>
                     <li
                         key={i.value}
                         style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.color === i.value
+                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.[name] === i.value
                             ?
                             styles.active
                             :
-                            '' || (this.props.product.currentAttributes?.color === undefined
+                            '' || (this.props.product.currentAttributes?.[name] === undefined || this.props.product.currentAttributes?.[name] === null
                                 ?
                                 (index === 0 ? styles.active : '')
                                 :
@@ -98,87 +101,68 @@ class CartItem extends Component {
         )
     }
 
-    createProductAttributesSize = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.size === i.value
-                            ?
-                            styles.active
-                            :
-                            '' || (this.props.product.currentAttributes?.size === undefined
-                                ?
-                                (index === 0 ? styles.active : '')
-                                :
-                                '')
-                        )}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
+    onClickPlus = () => {
+        this.setState(
+            {
+                quantity: this.state.quantity + 1,
+            }
         )
+        this.props.renderQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+
+
+
+        // this.props.product.quantity = this.state.quantity;
+
+        // this.props.addToCart(
+        //     this.props.product.id,
+        //     this.props.product.name,
+        //     this.props.product.gallery,
+        //     this.props.product.description,
+        //     this.props.product.attributes,
+        //     this.props.product.prices,
+        //     this.props.product.brand,
+        //     this.props.product.currentAttributes,
+        //     this.state.quantity,
+        // )
     }
 
-    createProductAttributesUSB = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.usb === i.value
-                            ?
-                            styles.active
-                            :
-                            '' || (this.props.product.currentAttributes?.usb === undefined
-                                ?
-                                (index === 0 ? styles.active : '')
-                                :
-                                '')
-                        )}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
+    onClickMinus = () => {
+        this.setState(
+            {
+                quantity: this.state.quantity - 1 || 1
+            }
         )
+        this.props.renderQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+
+
+        // this.props.product.quantity = this.state.quantity;
+
+        // this.props.addToCart(
+        //     this.props.product.id,
+        //     this.props.product.name,
+        //     this.props.product.gallery,
+        //     this.props.product.description,
+        //     this.props.product.attributes,
+        //     this.props.product.prices,
+        //     this.props.product.brand,
+        //     this.props.product.currentAttributes,
+        //     this.state.quantity,
+        // )
     }
 
-    createProductAttributesTouchID = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.touchID === i.value
-                            ?
-                            styles.active
-                            :
-                            '' || (this.props.product.currentAttributes?.touchID === undefined
-                                ?
-                                (index === 0 ? styles.active : '')
-                                :
-                                '')
-                        )}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
-        )
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.state.quantity !== prevState.quantity) {
+            this.props.renderQuantity(this.state.quantity)
+        }
     }
+
 
     renderProductQuantity = () => {
         return (
             <div className={styles.productQuantity}>
-                <div className={styles.quantityPlus}></div>
-                <div className={styles.quantity}>1</div>
-                <div className={styles.quantityMinus}></div>
+                <div onClick={() => this.onClickPlus()} className={styles.quantityPlus}></div>
+                <div className={styles.quantity}>{this.state.quantity}</div>
+                <div onClick={() => this.onClickMinus()} className={styles.quantityMinus}></div>
             </div>
         )
     }
@@ -218,9 +202,7 @@ class CartItem extends Component {
         )
     }
 
-
     render() {
-        console.log(this.props.product)
         return (
             <section className={styles.cartContainer}>
                 <div className={styles.cartItem}>
@@ -228,6 +210,7 @@ class CartItem extends Component {
                         {this.renderProductTitle()}
                         {this.renderProductPrice()}
                         {this.renderProductAttributes()}
+                        {this.state.quantity}
                     </div>
                     <div className={styles.productView}>
                         {this.renderProductQuantity()}

@@ -3,8 +3,10 @@
     flex-direction: column;
     padding: 2px;
     margin-bottom: 40px;
+    min-height: 130px;
 
     .drawerItem {
+        height: 100%;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -12,7 +14,6 @@
         .productInfoBlock {
             display: flex;
             flex-direction: column;
-            height: 100%;
 
             .productTitle {
                 margin-bottom: 4px;

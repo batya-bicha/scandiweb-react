@@ -13,7 +13,7 @@ class Main extends Component {
         super(props)
 
         this.state = {
-            currency: null
+            currency: 'USD',
         }
     }
 
@@ -105,7 +105,7 @@ class Main extends Component {
 
     render = () => {
         return (
-            <main className={this.props.cartOpened ? (styles.main + ' ' + styles.mainHidden) : styles.main}>
+            <main className={styles.main}>
                 {
                     this.props.switcherOpened
                     &&

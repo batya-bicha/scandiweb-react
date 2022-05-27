@@ -30,37 +30,37 @@ class DrawerItem extends Component {
 
     renderProductAttributes = () => {
         return (
-            this.props.product?.attributes.length !== 0
+            this.props.product?.attributes?.length !== 0
                 ?
                 <div className={styles.productAttributes}>
                     {
-                        this.props.product?.attributes.map((i, index) =>
+                        this.props.product?.attributes?.map((i, index) =>
                             i.name.toLowerCase() === 'color'
                                 ?
                                 <div key={index} className={styles.attributeColor}>
                                     <span className={styles.attributeName}>{i.name}:</span>
-                                    {this.createProductAttributesColor(index)}
+                                    {this.createProductAttributes(index, 'color')}
                                 </div>
                                 :
                                 i.name.toLowerCase() === 'size' || i.name.toLowerCase() === 'capacity'
                                     ?
                                     <div key={index} className={i.name.toLowerCase() === 'capacity' ? styles.attributeCapacity : styles.attributeSize}>
                                         <span className={styles.attributeName}>{i.name}:</span>
-                                        {this.createProductAttributesSize(index)}
+                                        {this.createProductAttributes(index, 'size')}
                                     </div>
                                     :
                                     i.name.toLowerCase() === 'with usb 3 ports'
                                         ?
                                         <div key={index} className={styles.attributeUSB}>
                                             <span className={styles.attributeName}>{i.name}:</span>
-                                            {this.createProductAttributesUSB(index)}
+                                            {this.createProductAttributes(index, 'usb')}
                                         </div>
                                         :
                                         i.name.toLowerCase() === 'touch id in keyboard'
                                             ?
                                             <div key={index} className={styles.attributeSizeTouchID}>
                                                 <span className={styles.attributeName}>{i.name}:</span>
-                                                {this.createProductAttributesTouchID(index)}
+                                                {this.createProductAttributes(index, 'touchID')}
                                             </div>
                                             :
                                             null
@@ -72,62 +72,23 @@ class DrawerItem extends Component {
         )
     }
 
-    createProductAttributesColor = (index) => {
+    createProductAttributes = (index, name) => {
         return (
             <ul className={styles.attributeList}>
                 {this.props.product?.attributes[index].items.map((i, index) =>
                     <li
                         key={i.value}
                         style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
-        )
-    }
-
-    createProductAttributesSize = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
-        )
-    }
-
-    createProductAttributesUSB = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}
-                    >
-                        {i.value.includes('#') ? null : i.value}
-                    </li>
-                )}
-            </ul>
-        )
-    }
-
-    createProductAttributesTouchID = (index) => {
-        return (
-            <ul className={styles.attributeList}>
-                {this.props.product?.attributes[index].items.map((i, index) =>
-                    <li
-                        key={i.value}
-                        style={{ backgroundColor: i.value }}
-                        className={styles.attributeItem + ' ' + (index === 0 ? styles.active : '')}
+                        className={styles.attributeItem + ' ' + (this.props.product.currentAttributes?.[name] === i.value
+                            ?
+                            styles.active
+                            :
+                            '' || (this.props.product.currentAttributes?.[name] === undefined || this.props.product.currentAttributes?.[name] === null
+                                ?
+                                (index === 0 ? styles.active : '')
+                                :
+                                '')
+                        )}
                     >
                         {i.value.includes('#') ? null : i.value}
                     </li>
@@ -150,7 +111,7 @@ class DrawerItem extends Component {
         return (
             <div className={styles.productImg}>
                 <img
-                    src={this.props?.product?.gallery[0]}
+                    src={this.props?.product?.gallery?.[0]}
                     alt='product'
                 />
             </div>
@@ -159,7 +120,7 @@ class DrawerItem extends Component {
 
     setItemCurrency = () => {
         return (
-            this.props?.product?.prices.map(i =>
+            this.props?.product?.prices?.map(i =>
                 i.currency.label === localStorage.getItem('currency')
                     ?
                     i.currency.symbol + '' + i.amount
