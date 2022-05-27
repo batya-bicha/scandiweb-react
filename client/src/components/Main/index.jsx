@@ -120,6 +120,8 @@ class Main extends Component {
                     &&
                     <Drawer
                         onDrawer={this.props.onClickCart}
+                        countingQuantity={this.props.countingQuantity}
+                        items={this.props.counter}
                     />
                 }
                 <h2 className={styles.category}>{this.getUrl()}</h2>

@@ -13,7 +13,24 @@ class DrawerItem extends Component {
 
 
     componentDidMount = () => {
-        // this.props.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.setState(
+            {
+                quantity: this.initialQuantity()?.find(i => i !== null) || 1,
+            }
+        )
+    }
+
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevState.quantity !== this.state.quantity) {
+            return (
+                this.props?.getQuantityFromDrawer !== undefined
+                    ?
+                    this.props?.getQuantityFromDrawer(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+                    :
+                    null
+            )
+        }
     }
 
 
@@ -118,6 +135,7 @@ class DrawerItem extends Component {
         this.props.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
+
     onClickMinus = () => {
         this.setState(
             {
@@ -125,6 +143,19 @@ class DrawerItem extends Component {
             }
         )
         this.props.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
+
+    initialQuantity = () => {
+        return (
+            this.props?.items?.map(i =>
+                i.id === this.props?.product?.id && JSON.stringify(i.attr) === JSON.stringify(this.props?.product?.currentAttributes)
+                    ?
+                    i.quantity
+                    :
+                    null
+            )
+        )
     }
 
 

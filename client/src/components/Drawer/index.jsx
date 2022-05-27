@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import styles from './Drawer.module.scss';
 import DrawerItem from '../DrawerItem';
-import CartItem from '../CartItem';
+
 
 class Drawer extends Component {
     constructor(props) {
@@ -34,7 +34,6 @@ class Drawer extends Component {
 
 
     isDrawerEmpty = () => {
-        console.log(this.props.items)
         return (
             this.state?.items === null
                 ?
@@ -55,7 +54,9 @@ class Drawer extends Component {
                                 <DrawerItem
                                     key={i.id + index}
                                     countingQuantity={this.props.countingQuantity}
+                                    items={this.props.items}
                                     product={i}
+                                    getQuantityFromDrawer={this.props.getQuantityFromDrawer}
                                 />
                             )
                         }

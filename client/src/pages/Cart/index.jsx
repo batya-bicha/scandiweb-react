@@ -13,9 +13,9 @@ class Cart extends Component {
 
         this.state = {
             tax: 21,
-            total: 0,
             quantity: 1,
             counter: [],
+            total: [],
         };
     }
 
@@ -24,7 +24,7 @@ class Cart extends Component {
         this.setState(
             {
                 items: (localStorage.getItem('items')?.length === 0) ? null : JSON.parse(localStorage.getItem('items')),
-                counter: [],
+                counter: this.props?.counter,
             }
         );
     }
@@ -36,6 +36,9 @@ class Cart extends Component {
                     items: this.state.items,
                 }
             );
+        }
+        if (prevState.counter !== this.state.counter) {
+
         }
     }
 
@@ -59,46 +62,7 @@ class Cart extends Component {
 
     renderQuantity = () => {
         return (
-            this.state?.counter?.reduce((accm, i) => { return accm + i.quantity }, 0)
-        )
-    }
-
-
-    countingQuantity = (...args) => {
-        const totalQuantity = this.state?.counter;
-        const quantity = args[0] === 0 ? 1 : args[0];
-        const id = args[1];
-        const attr = args[2];
-
-        if (id === undefined) {
-            return
-        }
-
-        if (totalQuantity.length) {
-            let flag = false;
-            let index = 0;
-            for (let i = 0; i < totalQuantity.length; i++) {
-                if (id === totalQuantity[i].id) {
-                    index = i
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag) {
-                totalQuantity[index].quantity = quantity;
-            } else {
-                totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-            }
-        } else {
-            totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-        }
-
-        return (
-            this.setState(
-                {
-                    counter: totalQuantity
-                }
-            )
+            this.props?.counter?.reduce((accm, i) => { return accm + i.quantity }, 0)
         )
     }
 
@@ -156,6 +120,45 @@ class Cart extends Component {
         )
     }
 
+    getQuantityFromDrawer = (...args) => {
+        const totalQuantity = this.state?.total;
+        const quantity = args[0] === 0 ? 1 : args[0];
+        const id = args[1];
+        const attr = args[2];
+
+        if (id === undefined) {
+            return
+        }
+
+        if (totalQuantity.length) {
+            let flag = false;
+            let index = 0;
+            for (let i = 0; i < totalQuantity.length; i++) {
+                if (id === totalQuantity[i].id && JSON.stringify(attr) === JSON.stringify(totalQuantity[i].attr)) {
+                    index = i
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
+                totalQuantity[index].quantity = quantity;
+            } else {
+                totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
+            }
+        } else {
+            totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
+        }
+
+
+        return (
+            this.setState(
+                {
+                    total: totalQuantity
+                }
+            )
+        )
+    }
+
 
     cartIsEmpty = () => {
         return (
@@ -166,6 +169,7 @@ class Cart extends Component {
                     <NavLink to="/all">
                         <div className={styles.emptyText}>
                             Cart is empty, please add items to cart
+                            {console.log(this.state.total)}
                         </div>
                     </NavLink>
                 </div>
@@ -176,7 +180,8 @@ class Cart extends Component {
                             <CartItem
                                 key={i.id + index}
                                 product={i}
-                                countingQuantity={this.countingQuantity}
+                                countingQuantity={this.props.countingQuantity}
+                                total={this.state.total}
                             />
                         )
                     }
@@ -213,8 +218,9 @@ class Cart extends Component {
                     &&
                     <Drawer
                         onDrawer={this.props.onClickCart}
-                        countingQuantity={this.countingQuantity}
-                        items={this.state.counter}
+                        countingQuantity={this.props.countingQuantity}
+                        items={this.props.counter}
+                        getQuantityFromDrawer={this.getQuantityFromDrawer}
                     />
                 }
                 <h2 className={styles.category}>{this.getUrl()}</h2>

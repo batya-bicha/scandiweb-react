@@ -15,7 +15,13 @@ class CartItem extends Component {
 
 
     componentDidMount = () => {
-        this.props.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.props?.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
+
+    componentDidUpdate = (prevProps, prevState) => {
+        // console.log(prevProps.total, this.props.total)
+        // console.log(this.props?.total[0]?.quantity)
     }
 
 
@@ -131,11 +137,24 @@ class CartItem extends Component {
     }
 
 
+    comparisonDrawerQuantity = () => {
+        return (
+            this.props?.total?.map(i =>
+                i.id === this.props?.product?.id && JSON.stringify(i.attr) === JSON.stringify(this.props?.product?.currentAttributes)
+                    ?
+                    i.quantity
+                    :
+                    null
+            )
+        )
+    }
+
+
     renderProductQuantity = () => {
         return (
             <div className={styles.productQuantity}>
                 <div onClick={() => this.onClickPlus()} className={styles.quantityPlus}></div>
-                <div className={styles.quantity}>{this.state.quantity}</div>
+                <div className={styles.quantity}>{this.comparisonDrawerQuantity().length ? this.comparisonDrawerQuantity() : this.state.quantity}</div>
                 <div onClick={() => this.onClickMinus()} className={styles.quantityMinus}></div>
             </div>
         )
