@@ -25,8 +25,15 @@ class App extends Component {
       cartOpened: false,
       switcherOpened: false,
       currency: 'USD',
+      cartQuantity: 0,
     }
   }
+
+
+  componentDidMount = () => {
+    localStorage.setItem('currency', this.state.currency)
+  }
+
 
   addToCart = (id, name, gallery, description, attributes, prices, brand, currentAttributes, quantity) => {
     this.setState(
@@ -46,6 +53,7 @@ class App extends Component {
     )
   }
 
+
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.product.id !== prevState.product.id) {
       this.addItemsToStorage(this.state.product)
@@ -62,6 +70,7 @@ class App extends Component {
       this.addItemsToStorage(this.state.product)
     }
   }
+
 
   addItemsToStorage = (item) => {
     const items = JSON.parse(localStorage.getItem('items'));
@@ -84,6 +93,7 @@ class App extends Component {
     }
   }
 
+
   setCartOpened = (bool, switchBool) => {
     this.setState(
       {
@@ -92,6 +102,7 @@ class App extends Component {
       }
     )
   }
+
 
   setSwitcherOpened = (bool, cartBool) => {
     this.setState(
@@ -102,6 +113,7 @@ class App extends Component {
     )
   }
 
+
   setCurrency = (currency = 'USD') => {
     localStorage.setItem('currency', currency)
     this.setState(
@@ -109,10 +121,6 @@ class App extends Component {
         currency: localStorage.getItem('currency')
       }
     )
-  }
-
-  componentDidMount = () => {
-    localStorage.setItem('currency', this.state.currency)
   }
 
 
@@ -149,8 +157,6 @@ class App extends Component {
               setCurrency={this.setCurrency}
               currency={this.state.currency}
               client={this.state.client}
-
-              addToCart={this.addToCart}
             />
           </Route>
           <Route path='/:id/product/:id' exact>

@@ -6,8 +6,16 @@ class DrawerItem extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            quantity: 1,
+        };
     }
+
+
+    componentDidMount = () => {
+        // this.props.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
 
     renderProductTitle = () => {
         return (
@@ -18,6 +26,7 @@ class DrawerItem extends Component {
         )
     }
 
+
     renderProductPrice = () => {
         return (
             <div className={styles.productPrice}>
@@ -27,6 +36,7 @@ class DrawerItem extends Component {
             </div>
         )
     }
+
 
     renderProductAttributes = () => {
         return (
@@ -72,6 +82,7 @@ class DrawerItem extends Component {
         )
     }
 
+
     createProductAttributes = (index, name) => {
         return (
             <ul className={styles.attributeList}>
@@ -97,15 +108,36 @@ class DrawerItem extends Component {
         )
     }
 
+
+    onClickPlus = () => {
+        this.setState(
+            {
+                quantity: this.state.quantity + 1,
+            }
+        )
+        this.props.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
+    onClickMinus = () => {
+        this.setState(
+            {
+                quantity: this.state.quantity - 1 || 1
+            }
+        )
+        this.props.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
+
     renderProductQuantity = () => {
         return (
             <div className={styles.productQuantity}>
-                <div className={styles.quantityPlus}></div>
-                <div className={styles.quantity}>1</div>
-                <div className={styles.quantityMinus}></div>
+                <div onClick={() => this.onClickPlus()} className={styles.quantityPlus}></div>
+                <div className={styles.quantity}>{this.state.quantity}</div>
+                <div onClick={() => this.onClickMinus()} className={styles.quantityMinus}></div>
             </div>
         )
     }
+
 
     renderProductImg = () => {
         return (
@@ -118,6 +150,7 @@ class DrawerItem extends Component {
         )
     }
 
+
     setItemCurrency = () => {
         return (
             this.props?.product?.prices?.map(i =>
@@ -129,6 +162,7 @@ class DrawerItem extends Component {
             )
         )
     }
+
 
     render() {
         return (

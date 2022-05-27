@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import styles from './Drawer.module.scss';
 import DrawerItem from '../DrawerItem';
+import CartItem from '../CartItem';
 
 class Drawer extends Component {
     constructor(props) {
@@ -10,9 +11,6 @@ class Drawer extends Component {
         this.state = {};
     }
 
-    closeDrawer = (e) => {
-        return e.target.className.includes('overlay') || e.target.className.includes('btnViewBag') ? this.props.onDrawer() : null;
-    }
 
     componentDidMount = () => {
         this.setState(
@@ -22,17 +20,21 @@ class Drawer extends Component {
         );
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        // console.log(this.state, prevState)
 
+    closeDrawer = (e) => {
+        return e.target.className.includes('overlay') || e.target.className.includes('btnViewBag') ? this.props.onDrawer() : null;
     }
 
-    checkOut = () => {
-        localStorage.removeItem('items');
+
+    renderQuantity = () => {
+        return (
+            this.props.items?.reduce((accm, i) => { return accm + i.quantity }, 0)
+        )
     }
+
 
     isDrawerEmpty = () => {
-        console.log(this.state?.items)
+        console.log(this.props.items)
         return (
             this.state?.items === null
                 ?
@@ -45,13 +47,14 @@ class Drawer extends Component {
                 :
                 <>
                     <h3 className={styles.drawerTitle}>
-                        <span className={styles.boldTitle}>My Bag</span>, 3 items
+                        <span className={styles.boldTitle}>My Bag</span>, {this.renderQuantity() === 1 ? this.renderQuantity() + ' item' : this.renderQuantity() + ' items'}
                     </h3>
                     <div className={styles.drawerItems}>
                         {
                             this.state?.items?.map((i, index) =>
                                 <DrawerItem
                                     key={i.id + index}
+                                    countingQuantity={this.props.countingQuantity}
                                     product={i}
                                 />
                             )
@@ -96,6 +99,7 @@ class Drawer extends Component {
         )
     }
 
+
     cartTotal = () => {
         let total = 0;
         this.state?.items?.map(item =>
@@ -111,6 +115,11 @@ class Drawer extends Component {
         return (
             total
         )
+    }
+
+
+    checkOut = () => {
+        localStorage.removeItem('items');
     }
 
 

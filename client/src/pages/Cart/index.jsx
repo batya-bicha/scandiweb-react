@@ -19,16 +19,6 @@ class Cart extends Component {
         };
     }
 
-    getUrl = () => {
-        return (
-            this.props.match.params.id.toUpperCase()
-        )
-    }
-
-    //? DELETE DELETE
-    deleteCartItem = () => {
-
-    }
 
     componentDidMount = () => {
         this.setState(
@@ -49,14 +39,32 @@ class Cart extends Component {
         }
     }
 
-    renderDefaultQuantity = () => {
+
+    getUrl = () => {
         return (
-            this.state?.items?.reduce((q, i) => { return q + (i?.quantity ? i?.quantity : 1) }, 0) + (this.state.counter.length ? this.state?.counter?.reduce((accm, i) => { return accm + i.quantity }, 0) - 1 : 0)
+            this.props.match.params.id.toUpperCase()
         )
     }
 
-    // arr = [];
-    renderQuantity = (...args) => {
+    //? DELETE DELETE
+    deleteCartItem = () => {
+
+    }
+
+
+    changeDrawerItemsQuantity = () => {
+
+    }
+
+
+    renderQuantity = () => {
+        return (
+            this.state?.counter?.reduce((accm, i) => { return accm + i.quantity }, 0)
+        )
+    }
+
+
+    countingQuantity = (...args) => {
         const totalQuantity = this.state?.counter;
         const quantity = args[0] === 0 ? 1 : args[0];
         const id = args[1];
@@ -77,74 +85,21 @@ class Cart extends Component {
                 }
             }
             if (flag) {
-                console.log("FLAG")
                 totalQuantity[index].quantity = quantity;
             } else {
-                console.log('ELSE')
                 totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
             }
         } else {
             totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
         }
 
-        console.log(totalQuantity)
-
-
-
-        // if (this.state?.counter?.length) {
-        //     let index = 0;
-        //     for (let i = 0; i < this.state.counter.length; i++) {
-        //         index = i;
-        //         if (id === this.state.counter[i].id && attr === this.state.counter[i].attr) {
-        //             this.setState(
-        //                 {
-        //                     counter: [{ 'id': id, 'attr': attr, 'quantity': quantity }]
-        //                 }
-        //             )
-        //         } else {
-        //             this.state.counter.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-        //         }
-        //     }
-        // } else {
-        //     this.state.counter.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-        // }
-
-        // console.log(this.state.counter)
-
-        // if (this.state?.counter?.length) {
-        //     let flag = false;
-        //     let index = 0;
-        //     for (let i = 0; i < this.state.counter.length; i++) {
-        //         if (id === this.state.counter[i].id && attr === this.state.counter[i].attr) {
-        //             flag = true;
-        //             index = i;
-        //             console.log(this.state.counter[i])
-        //             break;
-        //         }
-        //     }
-        //     if (flag) {
-        // this.setState(state => {
-        //     return {
-        //         counter: [{ 'id': id, 'attr': attr, 'quantity': quantity }]
-        //     }
-        // }
-        // )
-        //     } else {
-        //         this.state.counter.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-        //     }
-        // } else {
-        //     this.state?.counter?.push({ 'id': id, 'attr': attr, 'quantity': quantity })
-        // }
-
-
-        // this.state?.items?.map(i =>
-        //     i.quantity
-        // )
-        // return (
-        //     quantity
-        //     this.state?.items?.reduce((q, i) => { return q + (i?.quantity ? i?.quantity : 1) }, 0)
-        // )
-
+        return (
+            this.setState(
+                {
+                    counter: totalQuantity
+                }
+            )
+        )
     }
 
 
@@ -158,7 +113,7 @@ class Cart extends Component {
                 </div>
                 <div className={styles.orderValues}>
                     <p>{this.totalSymbol()}{(this.cartTotal() * this.state.tax / 100).toFixed(2)}</p>
-                    <p>{this.state.quantity}</p>
+                    <p>{this.renderQuantity()}</p>
                     <p>{this.totalSymbol()}{this.cartTotal().toFixed(2)}</p>
                 </div>
             </div>
@@ -183,6 +138,7 @@ class Cart extends Component {
         )
     }
 
+
     cartTotal = () => {
         let total = 0;
         this.state?.items?.map(item =>
@@ -199,6 +155,7 @@ class Cart extends Component {
             total
         )
     }
+
 
     cartIsEmpty = () => {
         return (
@@ -219,11 +176,7 @@ class Cart extends Component {
                             <CartItem
                                 key={i.id + index}
                                 product={i}
-                                renderQuantity={this.renderQuantity}
-                                counter={this.state.counter}
-
-                                setQuantity={this.props.setQuantity}
-                                addToCart={this.props.addToCart}
+                                countingQuantity={this.countingQuantity}
                             />
                         )
                     }
@@ -242,6 +195,7 @@ class Cart extends Component {
         localStorage.removeItem('items');
     }
 
+
     render = () => {
         return (
             <div className={styles.cart}>
@@ -259,10 +213,11 @@ class Cart extends Component {
                     &&
                     <Drawer
                         onDrawer={this.props.onClickCart}
+                        countingQuantity={this.countingQuantity}
+                        items={this.state.counter}
                     />
                 }
                 <h2 className={styles.category}>{this.getUrl()}</h2>
-                {this.renderDefaultQuantity()}
                 {this.cartIsEmpty()}
             </div>
         );

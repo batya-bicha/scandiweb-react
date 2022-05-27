@@ -13,6 +13,12 @@ class CartItem extends Component {
         };
     }
 
+
+    componentDidMount = () => {
+        this.props.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+    }
+
+
     renderProductTitle = () => {
         return (
             <div className={styles.productTitle}>
@@ -21,6 +27,7 @@ class CartItem extends Component {
             </div>
         )
     }
+
 
     renderProductPrice = () => {
         return (
@@ -31,6 +38,7 @@ class CartItem extends Component {
             </div>
         )
     }
+
 
     renderProductAttributes = () => {
         return (
@@ -76,6 +84,7 @@ class CartItem extends Component {
         )
     }
 
+
     createProductAttributes = (index, name) => {
         return (
             <ul className={styles.attributeList}>
@@ -101,59 +110,24 @@ class CartItem extends Component {
         )
     }
 
+
     onClickPlus = () => {
         this.setState(
             {
                 quantity: this.state.quantity + 1,
             }
         )
-        this.props.renderQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
-
-
-
-        // this.props.product.quantity = this.state.quantity;
-
-        // this.props.addToCart(
-        //     this.props.product.id,
-        //     this.props.product.name,
-        //     this.props.product.gallery,
-        //     this.props.product.description,
-        //     this.props.product.attributes,
-        //     this.props.product.prices,
-        //     this.props.product.brand,
-        //     this.props.product.currentAttributes,
-        //     this.state.quantity,
-        // )
+        this.props.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
+
 
     onClickMinus = () => {
         this.setState(
             {
-                quantity: this.state.quantity - 1 || 1
+                quantity: this.state.quantity - 1 || 1,
             }
         )
-        this.props.renderQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
-
-
-        // this.props.product.quantity = this.state.quantity;
-
-        // this.props.addToCart(
-        //     this.props.product.id,
-        //     this.props.product.name,
-        //     this.props.product.gallery,
-        //     this.props.product.description,
-        //     this.props.product.attributes,
-        //     this.props.product.prices,
-        //     this.props.product.brand,
-        //     this.props.product.currentAttributes,
-        //     this.state.quantity,
-        // )
-    }
-
-    componentDidUpdate = (prevProps, prevState) => {
-        if (this.state.quantity !== prevState.quantity) {
-            this.props.renderQuantity(this.state.quantity)
-        }
+        this.props.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 
@@ -166,6 +140,7 @@ class CartItem extends Component {
             </div>
         )
     }
+
 
     renderProductSlider = () => {
         return (
@@ -190,6 +165,7 @@ class CartItem extends Component {
         )
     }
 
+
     setItemCurrency = () => {
         return (
             this.props?.product?.prices.map(i =>
@@ -202,6 +178,7 @@ class CartItem extends Component {
         )
     }
 
+
     render() {
         return (
             <section className={styles.cartContainer}>
@@ -210,7 +187,6 @@ class CartItem extends Component {
                         {this.renderProductTitle()}
                         {this.renderProductPrice()}
                         {this.renderProductAttributes()}
-                        {this.state.quantity}
                     </div>
                     <div className={styles.productView}>
                         {this.renderProductQuantity()}
