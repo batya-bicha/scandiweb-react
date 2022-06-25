@@ -24,7 +24,7 @@ class Cart extends Component {
         this.setState(
             {
                 items: (localStorage.getItem('items')?.length === 0) ? null : JSON.parse(localStorage.getItem('items')),
-                counter: this.props?.counter,
+                // counter: this.props?.counter,
             }
         );
     }
@@ -169,7 +169,6 @@ class Cart extends Component {
                     <NavLink to="/all">
                         <div className={styles.emptyText}>
                             Cart is empty, please add items to cart
-                            {console.log(this.state.total)}
                         </div>
                     </NavLink>
                 </div>
@@ -181,6 +180,7 @@ class Cart extends Component {
                                 key={i.id + index}
                                 product={i}
                                 countingQuantity={this.props.countingQuantity}
+                                items={this.props.counter}
                                 total={this.state.total}
                             />
                         )
@@ -220,7 +220,7 @@ class Cart extends Component {
                         onDrawer={this.props.onClickCart}
                         countingQuantity={this.props.countingQuantity}
                         items={this.props.counter}
-                        getQuantityFromDrawer={this.getQuantityFromDrawer}
+                    // getQuantityFromDrawer={this.getQuantityFromDrawer}
                     />
                 }
                 <h2 className={styles.category}>{this.getUrl()}</h2>

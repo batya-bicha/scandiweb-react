@@ -26,13 +26,32 @@ class App extends Component {
       switcherOpened: false,
       currency: 'USD',
       cartQuantity: 0,
-      counter: [],
+      drawerCounter: [],
     }
   }
 
 
   componentDidMount = () => {
     localStorage.setItem('currency', this.state.currency)
+  }
+
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.product.id !== prevState.product.id) {
+      this.addItemsToStorage(this.state.product)
+    }
+
+    if (this.state.currency !== prevState.currency) {
+      this.setState(
+        {
+          currency: localStorage.getItem('currency')
+        }
+      )
+    }
+
+    if (this.state.product.quantity !== prevState.product.quantity) {
+      this.addItemsToStorage(this.state.product)
+    }
   }
 
 
@@ -55,40 +74,26 @@ class App extends Component {
   }
 
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.state.product.id !== prevState.product.id) {
-      this.addItemsToStorage(this.state.product)
-    }
-
-    if (this.state.currency !== prevState.currency) {
-      this.setState(
-        {
-          currency: localStorage.getItem('currency')
-        }
-      )
-    }
-    if (this.state.product.quantity !== prevState.product.quantity) {
-      this.addItemsToStorage(this.state.product)
-    }
-  }
-
-
   addItemsToStorage = (item) => {
     const items = JSON.parse(localStorage.getItem('items'));
+
     if (items?.length) {
       let flag = false;
+
       for (let i = 0; i < items.length; i++) {
         if (item.id === items[i].id) {
           flag = true;
           break;
         }
       }
+
       if (flag) {
         console.log('not unique');
       } else {
         items.push(item);
         localStorage.setItem("items", JSON.stringify(items));
       }
+
     } else {
       localStorage.setItem("items", JSON.stringify([item]));
     }
@@ -126,7 +131,7 @@ class App extends Component {
 
 
   countingQuantity = (...args) => {
-    const totalQuantity = this.state?.counter;
+    const totalQuantity = this.state?.drawerCounter;
     const quantity = args[0] === 0 ? 1 : args[0];
     const id = args[1];
     const attr = args[2];
@@ -135,29 +140,34 @@ class App extends Component {
       return
     }
 
-    if (totalQuantity.length) {
+    if (totalQuantity?.length) {
       let flag = false;
       let index = 0;
+
       for (let i = 0; i < totalQuantity.length; i++) {
-        if (id === totalQuantity[i].id && JSON.stringify(attr) === JSON.stringify(totalQuantity[i].attr)) {
+        if ((id === totalQuantity[i].id && JSON.stringify(attr) === JSON.stringify(totalQuantity[i].attr)) || (id === totalQuantity[i].id && JSON.stringify(attr) === null)) {
           index = i
           flag = true;
           break;
         }
       }
+
       if (flag) {
         totalQuantity[index].quantity = quantity;
       } else {
         totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
       }
+
     } else {
       totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
     }
 
+    console.log(totalQuantity)
+
     return (
       this.setState(
         {
-          counter: totalQuantity
+          drawerCounter: totalQuantity,
         }
       )
     )
@@ -187,7 +197,7 @@ class App extends Component {
               setCurrency={this.setCurrency}
               currency={this.state.currency}
               countingQuantity={this.countingQuantity}
-              counter={this.state.counter}
+              counter={this.state.drawerCounter}
             />
           </Route>
           <Route path='/:id/:id' exact>
@@ -200,7 +210,7 @@ class App extends Component {
               currency={this.state.currency}
               client={this.state.client}
               countingQuantity={this.countingQuantity}
-              counter={this.state.counter}
+              counter={this.state.drawerCounter}
             />
           </Route>
           <Route path='/:id/product/:id' exact>
@@ -213,7 +223,7 @@ class App extends Component {
               currency={this.state.currency}
               client={this.state.client}
               countingQuantity={this.countingQuantity}
-              counter={this.state.counter}
+              counter={this.state.drawerCounter}
             />
           </Route>
         </Switch>

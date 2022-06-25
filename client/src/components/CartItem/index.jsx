@@ -16,6 +16,7 @@ class CartItem extends Component {
 
     componentDidMount = () => {
         this.props?.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+        console.log(this.props?.product?.currentAttributes)
     }
 
 

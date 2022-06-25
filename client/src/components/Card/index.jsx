@@ -33,6 +33,7 @@ class Card extends Component {
 
     addToCart = (e) => {
         e.preventDefault();
+        this.props.countingQuantity(1, this.props.id, this.state.currentAttributes);
 
         this.props.addToCart(
             this.props.id,

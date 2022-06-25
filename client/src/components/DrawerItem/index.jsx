@@ -21,17 +21,17 @@ class DrawerItem extends Component {
     }
 
 
-    componentDidUpdate = (prevProps, prevState) => {
-        if (prevState.quantity !== this.state.quantity) {
-            return (
-                this.props?.getQuantityFromDrawer !== undefined
-                    ?
-                    this.props?.getQuantityFromDrawer(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
-                    :
-                    null
-            )
-        }
-    }
+    // componentDidUpdate = (prevProps, prevState) => {
+    //     if (prevState.quantity !== this.state.quantity) {
+    //         return (
+    //             this.props?.getQuantityFromDrawer !== undefined
+    //                 ?
+    //                 this.props?.getQuantityFromDrawer(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
+    //                 :
+    //                 null
+    //         )
+    //     }
+    // }
 
 
     renderProductTitle = () => {
@@ -132,7 +132,7 @@ class DrawerItem extends Component {
                 quantity: this.state.quantity + 1,
             }
         )
-        this.props.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.props?.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 
@@ -142,7 +142,7 @@ class DrawerItem extends Component {
                 quantity: this.state.quantity - 1 || 1
             }
         )
-        this.props.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.props?.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 

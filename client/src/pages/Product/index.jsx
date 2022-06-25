@@ -431,7 +431,6 @@ class Product extends Component {
                 {this.renderProductGallery()}
                 <section className={styles.productInfoBlock}>
                     {this.renderProductTitle()}
-                    {this.state.quantity}
                     {this.renderProductAttributes()}
                     {this.renderProductCurrency()}
                     {this.disableBtn(this.state.product)}

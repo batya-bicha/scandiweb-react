@@ -140,6 +140,7 @@ class Main extends Component {
                                 brand={i.brand}
                                 addToCart={this.props.addToCart}
                                 currency={this.state.currency}
+                                countingQuantity={this.props.countingQuantity}
                             />
                         </NavLink>
                     )}

@@ -8,14 +8,17 @@ class Drawer extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            defaultCouter: null,
+        };
     }
 
 
     componentDidMount = () => {
         this.setState(
             {
-                items: (localStorage.getItem('items')?.length === 0) ? null : JSON.parse(localStorage.getItem('items')),
+                items: (JSON.parse(localStorage.getItem('items'))?.length === 0) ? null : JSON.parse(localStorage.getItem('items')),
+                defaultCouter: JSON.parse(localStorage.getItem('items'))?.length,
             }
         );
     }
@@ -26,9 +29,10 @@ class Drawer extends Component {
     }
 
 
-    renderQuantity = () => {
+    renderQuantity = (items) => {
+        // console.log(this.props.items)
         return (
-            this.props.items?.reduce((accm, i) => { return accm + i.quantity }, 0)
+            this.props.items?.reduce((accm, i) => { return accm + i.quantity }, 0) || items
         )
     }
 
@@ -46,7 +50,7 @@ class Drawer extends Component {
                 :
                 <>
                     <h3 className={styles.drawerTitle}>
-                        <span className={styles.boldTitle}>My Bag</span>, {this.renderQuantity() === 1 ? this.renderQuantity() + ' item' : this.renderQuantity() + ' items'}
+                        <span className={styles.boldTitle}>My Bag</span>, {this.renderQuantity(this.state.defaultCouter) === 1 ? this.renderQuantity(this.state.defaultCouter) + ' item' : this.renderQuantity(this.state.defaultCouter) + ' items'}
                     </h3>
                     <div className={styles.drawerItems}>
                         {
@@ -56,7 +60,7 @@ class Drawer extends Component {
                                     countingQuantity={this.props.countingQuantity}
                                     items={this.props.items}
                                     product={i}
-                                    getQuantityFromDrawer={this.props.getQuantityFromDrawer}
+                                // getQuantityFromDrawer={this.props.getQuantityFromDrawer}
                                 />
                             )
                         }
