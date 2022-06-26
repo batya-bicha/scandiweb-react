@@ -25,8 +25,6 @@ class App extends Component {
       cartOpened: false,
       switcherOpened: false,
       currency: 'USD',
-      cartQuantity: 0,
-      drawerCounter: [],
     }
   }
 
@@ -130,48 +128,48 @@ class App extends Component {
   }
 
 
-  countingQuantity = (...args) => {
-    const totalQuantity = this.state?.drawerCounter;
-    const quantity = args[0] === 0 ? 1 : args[0];
-    const id = args[1];
-    const attr = args[2];
+  // countingQuantity = (...args) => {
+  //   const totalQuantity = this.state?.drawerCounter;
+  //   const quantity = args[0] === 0 ? 1 : args[0];
+  //   const id = args[1];
+  //   const attr = args[2];
 
-    if (id === undefined) {
-      return
-    }
+  //   if (id === undefined) {
+  //     return
+  //   }
 
-    if (totalQuantity?.length) {
-      let flag = false;
-      let index = 0;
+  //   if (totalQuantity?.length) {
+  //     let flag = false;
+  //     let index = 0;
 
-      for (let i = 0; i < totalQuantity.length; i++) {
-        if ((id === totalQuantity[i].id && JSON.stringify(attr) === JSON.stringify(totalQuantity[i].attr)) || (id === totalQuantity[i].id && JSON.stringify(attr) === null)) {
-          index = i
-          flag = true;
-          break;
-        }
-      }
+  //     for (let i = 0; i < totalQuantity.length; i++) {
+  //       if ((id === totalQuantity[i].id && JSON.stringify(attr) === JSON.stringify(totalQuantity[i].attr)) || (id === totalQuantity[i].id && JSON.stringify(attr) === null)) {
+  //         index = i
+  //         flag = true;
+  //         break;
+  //       }
+  //     }
 
-      if (flag) {
-        totalQuantity[index].quantity = quantity;
-      } else {
-        totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-      }
+  //     if (flag) {
+  //       totalQuantity[index].quantity = quantity;
+  //     } else {
+  //       totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
+  //     }
 
-    } else {
-      totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
-    }
+  //   } else {
+  //     totalQuantity?.push({ 'id': id, 'attr': attr, 'quantity': quantity });
+  //   }
 
-    console.log(totalQuantity)
+  //   console.log(totalQuantity)
 
-    return (
-      this.setState(
-        {
-          drawerCounter: totalQuantity,
-        }
-      )
-    )
-  }
+  //   return (
+  //     this.setState(
+  //       {
+  //         drawerCounter: totalQuantity,
+  //       }
+  //     )
+  //   )
+  // }
 
 
   render = () => {
@@ -196,8 +194,7 @@ class App extends Component {
               onClickCart={this.setCartOpened}
               setCurrency={this.setCurrency}
               currency={this.state.currency}
-              countingQuantity={this.countingQuantity}
-              counter={this.state.drawerCounter}
+            // countingQuantity={this.countingQuantity}
             />
           </Route>
           <Route path='/:id/:id' exact>
@@ -209,8 +206,7 @@ class App extends Component {
               setCurrency={this.setCurrency}
               currency={this.state.currency}
               client={this.state.client}
-              countingQuantity={this.countingQuantity}
-              counter={this.state.drawerCounter}
+            // countingQuantity={this.countingQuantity}
             />
           </Route>
           <Route path='/:id/product/:id' exact>
@@ -222,8 +218,7 @@ class App extends Component {
               setCurrency={this.setCurrency}
               currency={this.state.currency}
               client={this.state.client}
-              countingQuantity={this.countingQuantity}
-              counter={this.state.drawerCounter}
+            // countingQuantity={this.countingQuantity}
             />
           </Route>
         </Switch>

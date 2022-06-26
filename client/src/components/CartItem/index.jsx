@@ -8,21 +8,27 @@ class CartItem extends Component {
         super(props);
 
         this.state = {
-            quantity: 1,
-            product: null,
+            quantity: 0,
+            cartQantity: null,
         };
     }
 
 
     componentDidMount = () => {
-        this.props?.countingQuantity(this.state.quantity, this.props?.product?.id, this.props?.product?.currentAttributes)
-        console.log(this.props?.product?.currentAttributes)
+        this.setState(
+            {
+                quantity: this.props.product.quantity,
+                product: JSON.parse(localStorage.getItem('items')),
+            }
+        )
+        this.props.renderQuantity(JSON.parse(localStorage.getItem('items')).reduce((sum, i) => {
+            return sum + i.quantity
+        }, 0))
     }
 
 
     componentDidUpdate = (prevProps, prevState) => {
-        // console.log(prevProps.total, this.props.total)
-        // console.log(this.props?.total[0]?.quantity)
+
     }
 
 
@@ -118,13 +124,35 @@ class CartItem extends Component {
     }
 
 
+    changeLocalQuantity = (...item) => {
+        const items = JSON.parse(localStorage.getItem('items'));
+        const quantity = item[0] || 1;
+        const id = item[1];
+        const attr = item[2];
+
+        if (items?.length) {
+            for (let i = 0; i < items.length; i++) {
+
+                if (items[i].id === id && JSON.stringify(items[i].currentAttributes) === JSON.stringify(attr)) {
+                    items[i].quantity = quantity;
+                    localStorage.setItem('items', JSON.stringify(items));
+                }
+            }
+        }
+
+        this.props.renderQuantity(JSON.parse(localStorage.getItem('items')).reduce((sum, i) => {
+            return sum + i.quantity
+        }, 0))
+    }
+
+
     onClickPlus = () => {
         this.setState(
             {
                 quantity: this.state.quantity + 1,
             }
         )
-        this.props.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.changeLocalQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 
@@ -134,19 +162,13 @@ class CartItem extends Component {
                 quantity: this.state.quantity - 1 || 1,
             }
         )
-        this.props.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        this.changeLocalQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 
     comparisonDrawerQuantity = () => {
         return (
-            this.props?.total?.map(i =>
-                i.id === this.props?.product?.id && JSON.stringify(i.attr) === JSON.stringify(this.props?.product?.currentAttributes)
-                    ?
-                    i.quantity
-                    :
-                    null
-            )
+            this.state.quantity
         )
     }
 
@@ -155,7 +177,7 @@ class CartItem extends Component {
         return (
             <div className={styles.productQuantity}>
                 <div onClick={() => this.onClickPlus()} className={styles.quantityPlus}></div>
-                <div className={styles.quantity}>{this.comparisonDrawerQuantity().length ? this.comparisonDrawerQuantity() : this.state.quantity}</div>
+                <div className={styles.quantity}>{this.comparisonDrawerQuantity()}</div>
                 <div onClick={() => this.onClickMinus()} className={styles.quantityMinus}></div>
             </div>
         )

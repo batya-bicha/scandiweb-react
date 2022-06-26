@@ -13,7 +13,7 @@ class Cart extends Component {
 
         this.state = {
             tax: 21,
-            quantity: 1,
+            quantity: null,
             counter: [],
             total: [],
         };
@@ -37,9 +37,6 @@ class Cart extends Component {
                 }
             );
         }
-        if (prevState.counter !== this.state.counter) {
-
-        }
     }
 
 
@@ -49,21 +46,20 @@ class Cart extends Component {
         )
     }
 
+
     //? DELETE DELETE
     deleteCartItem = () => {
 
     }
 
 
-    changeDrawerItemsQuantity = () => {
-
-    }
-
-
-    renderQuantity = () => {
-        return (
-            this.props?.counter?.reduce((accm, i) => { return accm + i.quantity }, 0)
+    renderQuantity = (i) => {
+        this.setState(
+            {
+                quantity: i,
+            }
         )
+        // console.log(i)
     }
 
 
@@ -77,7 +73,7 @@ class Cart extends Component {
                 </div>
                 <div className={styles.orderValues}>
                     <p>{this.totalSymbol()}{(this.cartTotal() * this.state.tax / 100).toFixed(2)}</p>
-                    <p>{this.renderQuantity()}</p>
+                    <p>{this.state.quantity}</p>
                     <p>{this.totalSymbol()}{this.cartTotal().toFixed(2)}</p>
                 </div>
             </div>
@@ -119,6 +115,7 @@ class Cart extends Component {
             total
         )
     }
+
 
     getQuantityFromDrawer = (...args) => {
         const totalQuantity = this.state?.total;
@@ -179,9 +176,10 @@ class Cart extends Component {
                             <CartItem
                                 key={i.id + index}
                                 product={i}
-                                countingQuantity={this.props.countingQuantity}
+                                // countingQuantity={this.props.countingQuantity}
                                 items={this.props.counter}
                                 total={this.state.total}
+                                renderQuantity={this.renderQuantity}
                             />
                         )
                     }
@@ -218,9 +216,8 @@ class Cart extends Component {
                     &&
                     <Drawer
                         onDrawer={this.props.onClickCart}
-                        countingQuantity={this.props.countingQuantity}
+                        // countingQuantity={this.props.countingQuantity}
                         items={this.props.counter}
-                    // getQuantityFromDrawer={this.getQuantityFromDrawer}
                     />
                 }
                 <h2 className={styles.category}>{this.getUrl()}</h2>

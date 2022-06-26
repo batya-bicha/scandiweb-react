@@ -132,7 +132,7 @@ class DrawerItem extends Component {
                 quantity: this.state.quantity + 1,
             }
         )
-        this.props?.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        // this.props?.countingQuantity(this.state.quantity + 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 
@@ -142,7 +142,7 @@ class DrawerItem extends Component {
                 quantity: this.state.quantity - 1 || 1
             }
         )
-        this.props?.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
+        // this.props?.countingQuantity(this.state.quantity - 1, this.props?.product?.id, this.props?.product?.currentAttributes)
     }
 
 

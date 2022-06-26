@@ -57,10 +57,9 @@ class Drawer extends Component {
                             this.state?.items?.map((i, index) =>
                                 <DrawerItem
                                     key={i.id + index}
-                                    countingQuantity={this.props.countingQuantity}
+                                    // countingQuantity={this.props.countingQuantity}
                                     items={this.props.items}
                                     product={i}
-                                // getQuantityFromDrawer={this.props.getQuantityFromDrawer}
                                 />
                             )
                         }
